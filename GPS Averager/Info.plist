@@ -34,5 +34,9 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allow GPS Averager to track your location</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Allow GPS Averager to track your location and movement, even when the app is not active</string>
 </dict>
 </plist>
