@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import MapKit
 import CoreLocation
 
 var savedAverages = [[String:String]]()
 
-class ViewController: UIViewController, CLLocationManagerDelegate {
+class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     @IBOutlet weak var autoOrManual: UISegmentedControl!
     
@@ -24,12 +25,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var avgAltLabel: UILabel!
     @IBOutlet weak var avgPointsLabel: UILabel!
     
+    @IBOutlet weak var mapView: MKMapView!
     
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var finishButton: UIButton!
     
     var manager:CLLocationManager!
     var isRunning:Bool!
+    var mapCentered:Bool!
     var mode:String!
     
     var latitudes = [Double]()
@@ -39,8 +42,19 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // TODO: These defaults will change once the user has the option of defaulting to manual mode
         self.isRunning = false
+        self.mapCentered = false
         self.mode = "Auto"
+        self.startButton.setTitle("Start", forState: UIControlState.Normal)
+        
+        //MARK: Geolocation
+        
+        manager = CLLocationManager()
+        manager.delegate = self
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.requestWhenInUseAuthorization()
+        manager.startUpdatingLocation()
         
         //MARK: Aesthetics
         
@@ -52,14 +66,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         self.finishButton.layer.borderWidth = 1
         self.finishButton.layer.borderColor = (UIColor (red:0.94, green:0.45, blue:0, alpha:1)).CGColor
         
-        //MARK: Geolocation
-        
-        manager = CLLocationManager()
-        manager.delegate = self
-        manager.desiredAccuracy = kCLLocationAccuracyBest
-        manager.requestWhenInUseAuthorization()
-        manager.startUpdatingLocation()
-        
     }
     
     @IBAction func changeMode(sender: UISegmentedControl) {
@@ -67,7 +73,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         var title = (self.autoOrManual.selectedSegmentIndex == 0) ? "Start" : "Add Point"
         self.mode = (self.autoOrManual.selectedSegmentIndex == 0) ? "Auto" : "Manual"
         self.currentLabel.text = (self.autoOrManual.selectedSegmentIndex == 0) ? "Most Recent" : "Current"
-        self.isRunning = (self.autoOrManual.selectedSegmentIndex == 0) ? false : true
+        self.isRunning = false
         self.startButton.setTitle(title, forState: UIControlState.Normal)
         
     }
@@ -100,7 +106,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             
         } else if self.mode == "Manual" {
             
-            
             // FIXME: Manual mode not working yet
             // have the currentlat, currentlon, and currentalt flash briefly in a different color when "Add Point" is pressed
             // add point to array for averaging
@@ -110,6 +115,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBAction func finishWasPressed(sender: UIButton) {
         
+        self.isRunning = false
+        
         let avgCoords = Functions.averageCoordinates(latitudes, longitudes: longitudes)
         
         // average the altitudes
@@ -118,7 +125,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         // format date
         var dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "EEEE, MMMM d, yyyy"
+        dateFormatter.dateStyle = .LongStyle
+        dateFormatter.timeStyle = .LongStyle
         let formattedDate = dateFormatter.stringFromDate(NSDate())
         
         
@@ -138,10 +146,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         var userLocation:CLLocation = locations[0] as CLLocation
         
-        if self.isRunning == true {
+        if !mapCentered {
             
-//            // MARK: Change "current" labels
-//            // FIXME: Is there a better way of rounding so we don't have to do all this modulo stuff?
+            // MARK: Zoom and center map
+            var mapLat:CLLocationDegrees = userLocation.coordinate.latitude
+            var mapLon:CLLocationDegrees = userLocation.coordinate.longitude
+            var span:MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
+            var location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(mapLat, mapLon)
+            var region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
+            
+            mapView.setRegion(region, animated: true)
+            mapCentered = true
+            
+        }
+        
+        
+        // MARK: Collect points
+        if self.isRunning == true {
             
             let LatLon = Functions.formatCoordinateString(userLocation.coordinate.latitude, lon: userLocation.coordinate.longitude)
             
@@ -164,6 +185,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             avgAltLabel.text = "\(avgAlt)"            
             avgPointsLabel.text = "\(latitudes.count)"
             
+            // MARK: map points
+            var mapLat:CLLocationDegrees = userLocation.coordinate.latitude
+            var mapLon:CLLocationDegrees = userLocation.coordinate.longitude
+            var span:MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
+            var location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(mapLat, mapLon)
+            var region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
+            var annotation = MKPointAnnotation()
+            annotation.coordinate = location
+            
+            mapView.setRegion(region, animated: true)
+            mapView.addAnnotation(annotation)
             
         }
         

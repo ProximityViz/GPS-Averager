@@ -9,6 +9,8 @@
 import UIKit
 
 class SavedCoordsTVC: UITableViewController {
+    
+    var sendCoords = [String : String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,20 +41,41 @@ class SavedCoordsTVC: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         
+        // TODO: reverse order of cells (make sure to also reverse in willSelectRowAtIndexPath, if needed
         
-        var coordsToDisplay = savedAverages[indexPath.row]
+        var coordsForCell = savedAverages[indexPath.row]
         
-        let latToDisplay = coordsToDisplay["Latitude"]!
-        let lonToDisplay = coordsToDisplay["Longitude"]!
+        let latToDisplay = coordsForCell["Latitude"]!
+        let lonToDisplay = coordsForCell["Longitude"]!
         
         let LatLon = Functions.formatCoordinateString((latToDisplay as NSString).doubleValue, lon: (lonToDisplay as NSString).doubleValue)
         
         
         cell.textLabel?.text = "\(LatLon.latString), \(LatLon.lonString)"
-        cell.detailTextLabel?.text = coordsToDisplay["Date"]
+        cell.detailTextLabel?.text = coordsForCell["Date"]
 
         return cell
     }
+    
+//    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//        
+//        sendCoords = savedAverages[indexPath.row]
+//        
+//        println(sendCoords["Points"])
+//        
+//    }
+    
+    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        
+        sendCoords = savedAverages[indexPath.row]
+        
+        return indexPath
+        
+    }
+    
+    // TODO: in either prepareForSegue or didSelectRowAtIndexPath,
+    // pass along coordsToDisplay to the AvgCoordsVC
+    // can be based on the date displayed in the cell
 
     /*
     // Override to support conditional editing of the table view.
@@ -89,14 +112,17 @@ class SavedCoordsTVC: UITableViewController {
     }
     */
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
+        
+        if (segue.identifier == "showSaved") {
+            let newVC = segue.destinationViewController as AvgCoordsVC
+            
+            newVC.coordsToDisplay = sendCoords
+            
+        }
     }
-    */
 
 }

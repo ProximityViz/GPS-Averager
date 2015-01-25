@@ -299,6 +299,7 @@
                         <outlet property="currentLatLabel" destination="PK8-cD-FLa" id="cG8-13-HIk"/>
                         <outlet property="currentLonLabel" destination="hVi-0p-ygN" id="Dci-18-G8Z"/>
                         <outlet property="finishButton" destination="8Fd-Gk-i9S" id="Fh0-fZ-ZB3"/>
+                        <outlet property="mapView" destination="aD1-bB-qMf" id="DJZ-iS-LIT"/>
                         <outlet property="startButton" destination="Vr7-D5-qkz" id="EMF-8m-4Gq"/>
                     </connections>
                 </viewController>
@@ -334,6 +335,9 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="omi-UF-5a9" kind="show" identifier="showSaved" id="JMF-OL-vSn"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -365,22 +369,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Phy-j7-MUG">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="Mdl-Kj-cFx"/>
-                                </constraints>
-                                <items>
-                                    <navigationItem title="Averaged Coordinates" id="YDh-Dz-bCZ">
-                                        <barButtonItem key="leftBarButtonItem" title="Back" id="M5c-4A-svt"/>
-                                        <barButtonItem key="rightBarButtonItem" image="menu" width="44" id="b06-Q4-gfW">
-                                            <color key="tintColor" red="0.94117647059999998" green="0.45098039220000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        </barButtonItem>
-                                    </navigationItem>
-                                </items>
-                            </navigationBar>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="iPe-fg-P5m">
-                                <rect key="frame" x="0.0" y="44" width="600" height="355"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="335"/>
                             </mapView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Latitude" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9Bh-xe-phx">
                                 <rect key="frame" x="16" y="436" width="77" height="21"/>
@@ -579,8 +569,6 @@
                             <constraint firstItem="3pY-2j-qYg" firstAttribute="top" secondItem="GS5-VZ-J3l" secondAttribute="bottom" constant="8" id="KJz-W9-4E2"/>
                             <constraint firstAttribute="trailingMargin" secondItem="e1R-Rt-obo" secondAttribute="trailing" constant="-16" id="KTD-yu-hre"/>
                             <constraint firstItem="E5K-Q7-23D" firstAttribute="top" secondItem="B3s-An-DC6" secondAttribute="bottom" constant="8" id="Kh8-MK-YGH"/>
-                            <constraint firstItem="Phy-j7-MUG" firstAttribute="leading" secondItem="fla-hM-5AJ" secondAttribute="leadingMargin" constant="-16" id="Kw0-MU-ZLx"/>
-                            <constraint firstItem="Phy-j7-MUG" firstAttribute="top" secondItem="fla-hM-5AJ" secondAttribute="topMargin" id="L3R-px-IIX"/>
                             <constraint firstItem="9Bh-xe-phx" firstAttribute="leading" secondItem="fla-hM-5AJ" secondAttribute="leadingMargin" id="Lbg-3R-nBm"/>
                             <constraint firstItem="fli-lN-stq" firstAttribute="top" secondItem="FzB-2u-46R" secondAttribute="bottom" constant="8" id="LsI-n8-Yvo"/>
                             <constraint firstItem="iPe-fg-P5m" firstAttribute="trailing" secondItem="fla-hM-5AJ" secondAttribute="trailingMargin" constant="16" id="Lwv-ZA-E4F"/>
@@ -589,6 +577,7 @@
                             <constraint firstItem="7UC-Qx-RPC" firstAttribute="top" secondItem="fli-lN-stq" secondAttribute="bottom" constant="8" id="ObF-Fq-hhr"/>
                             <constraint firstItem="B3s-An-DC6" firstAttribute="top" secondItem="iPe-fg-P5m" secondAttribute="bottom" constant="8" id="Orl-nb-3dR"/>
                             <constraint firstItem="3pY-2j-qYg" firstAttribute="top" secondItem="GS5-VZ-J3l" secondAttribute="bottom" constant="8" id="P4n-hJ-akE"/>
+                            <constraint firstItem="iPe-fg-P5m" firstAttribute="top" secondItem="gd5-hS-ZmK" secondAttribute="bottom" id="P6P-1L-SJX"/>
                             <constraint firstItem="9Bh-xe-phx" firstAttribute="top" secondItem="iPe-fg-P5m" secondAttribute="bottom" constant="37" id="PCw-S1-EHR"/>
                             <constraint firstItem="FzB-2u-46R" firstAttribute="leading" secondItem="GS5-VZ-J3l" secondAttribute="trailing" constant="16" id="PQw-PN-jLh"/>
                             <constraint firstItem="4f9-rC-Vvr" firstAttribute="leading" secondItem="fla-hM-5AJ" secondAttribute="leadingMargin" id="RAk-kO-eF8"/>
@@ -611,10 +600,8 @@
                             <constraint firstItem="FzB-2u-46R" firstAttribute="top" secondItem="E5K-Q7-23D" secondAttribute="bottom" constant="8" id="n4T-Hp-HLD"/>
                             <constraint firstItem="fli-lN-stq" firstAttribute="trailing" secondItem="fla-hM-5AJ" secondAttribute="trailingMargin" id="pOL-f3-tke"/>
                             <constraint firstItem="e1R-Rt-obo" firstAttribute="top" secondItem="7UC-Qx-RPC" secondAttribute="bottom" constant="12" id="paf-xb-ldh"/>
-                            <constraint firstItem="iPe-fg-P5m" firstAttribute="top" secondItem="Phy-j7-MUG" secondAttribute="bottom" id="qua-OY-E0b"/>
                             <constraint firstItem="fli-lN-stq" firstAttribute="top" secondItem="FzB-2u-46R" secondAttribute="bottom" constant="8" id="sAn-8w-joX"/>
                             <constraint firstItem="E5K-Q7-23D" firstAttribute="trailing" secondItem="fla-hM-5AJ" secondAttribute="trailingMargin" id="sdn-fk-wzg"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Phy-j7-MUG" secondAttribute="trailing" constant="-16" id="tSD-ap-Q8K"/>
                             <constraint firstItem="B3s-An-DC6" firstAttribute="trailing" secondItem="fla-hM-5AJ" secondAttribute="trailingMargin" id="umt-v1-v1i"/>
                             <constraint firstItem="E5K-Q7-23D" firstAttribute="leading" secondItem="9Bh-xe-phx" secondAttribute="trailing" constant="16" id="uoe-Mz-3nV"/>
                             <constraint firstItem="7UC-Qx-RPC" firstAttribute="trailing" secondItem="fla-hM-5AJ" secondAttribute="trailingMargin" id="uuR-Lw-A0E"/>
@@ -630,11 +617,20 @@
                             </mask>
                         </variation>
                     </view>
+                    <navigationItem key="navigationItem" title="Averaged Coordinates" id="MsD-LW-F5T">
+                        <barButtonItem key="rightBarButtonItem" image="menu" width="44" id="Y3F-yh-miP">
+                            <color key="tintColor" red="0.94117647059999998" green="0.45098039220000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <segue destination="XzI-80-hyX" kind="show" id="k3a-oS-COq"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="avgAltLabel" destination="fli-lN-stq" id="fyd-eu-RSv"/>
                         <outlet property="avgLatLabel" destination="E5K-Q7-23D" id="pZy-AS-hyb"/>
                         <outlet property="avgLonLabel" destination="FzB-2u-46R" id="Ylq-WJ-ARX"/>
                         <outlet property="avgPointsLabel" destination="7UC-Qx-RPC" id="7h6-pz-Zgg"/>
+                        <outlet property="mapView" destination="iPe-fg-P5m" id="oNN-v5-iS4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4ry-0F-0ql" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -703,4 +699,8 @@
     <resources>
         <image name="menu" width="44" height="44"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="k3a-oS-COq"/>
+        <segue reference="KG0-qp-prj"/>
+    </inferredMetricsTieBreakers>
 </document>
