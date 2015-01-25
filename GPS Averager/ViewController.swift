@@ -12,6 +12,7 @@ import CoreLocation
 var savedAverages = [[String:String]]()
 
 class ViewController: UIViewController, CLLocationManagerDelegate {
+    
     @IBOutlet weak var autoOrManual: UISegmentedControl!
     
     @IBOutlet weak var currentLabel: UILabel!
@@ -34,8 +35,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var latitudes = [Double]()
     var longitudes = [Double]()
     var altitudes = [Float]()
-    
-    let π = M_PI
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,6 +66,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         var title = (self.autoOrManual.selectedSegmentIndex == 0) ? "Start" : "Add Point"
         self.mode = (self.autoOrManual.selectedSegmentIndex == 0) ? "Auto" : "Manual"
+        self.currentLabel.text = (self.autoOrManual.selectedSegmentIndex == 0) ? "Most Recent" : "Current"
         self.isRunning = (self.autoOrManual.selectedSegmentIndex == 0) ? false : true
         self.startButton.setTitle(title, forState: UIControlState.Normal)
         
@@ -110,40 +110,25 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     
     @IBAction func finishWasPressed(sender: UIButton) {
         
-        // FIXME: Maybe move this to its own function
+        let avgCoords = Functions.averageCoordinates(latitudes, longitudes: longitudes)
         
-        var avgX = 0 as Double
-        var avgY = 0 as Double
-        var avgZ = 0 as Double
-        var avgLat = 0 as Double
-        var avgLon = 0 as Double
+        // average the altitudes
+        // FIXME: is there a built-in average function?
+        let avgAlt = Functions.averageOf(altitudes)
         
-        for (var i = 0; i < latitudes.count; i++) {
-            
-            // calculate cartesian coordinates
-            var radLat = latitudes[i] * π / 180
-            var radLon = longitudes[i] * π / 180
-            
-            // w1 & w2 = 0
-            // calculate weighted average
-            avgX += (cos(radLat) * cos(radLon))
-            avgY += (cos(radLat) * sin(radLon))
-            avgZ += sin(radLat)
-            
-        }
+        // format date
+        var dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "EEEE, MMMM d, yyyy"
+        let formattedDate = dateFormatter.stringFromDate(NSDate())
         
-        // divide to get average
-        avgX /= Double(latitudes.count)
-        avgY /= Double(latitudes.count)
-        avgZ /= Double(latitudes.count)
         
-        // convert to lat & long, in degrees
-        avgLat = atan2(avgZ, sqrt(avgX * avgX + avgY * avgY)) * 180 / π
-        avgLon = atan2(avgY, avgX) * 180 / π
+        savedAverages.append(["Latitude" : "\(avgCoords.avgLat)", "Longitude" : "\(avgCoords.avgLon)", "Altitude": "\(avgAlt) m", "Points" : "\(latitudes.count)", "Date" : "\(formattedDate)"])
         
-        savedAverages.append(["Latitude" : "\(avgLat)", "Longitude" : "\(avgLon)", "Date" : "\(NSDate())"])
-        
-        println(savedAverages);
+        // reset
+        latitudes = []
+        longitudes = []
+        altitudes = []
+        self.avgPointsLabel.text = ""
         
     
     }
@@ -155,40 +140,29 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         if self.isRunning == true {
             
-            // MARK: Change labels
-            // FIXME: Is there a better way of rounding so we don't have to do all this modulo stuff?
-            // If not, move this code to its own function that will be run any time we need to return a string for a label.
-            var decimalPlaces = 1000000.0
-            var latitude = round(userLocation.coordinate.latitude * decimalPlaces) / decimalPlaces
-            var longitude = round(userLocation.coordinate.longitude * decimalPlaces) / decimalPlaces
+//            // MARK: Change "current" labels
+//            // FIXME: Is there a better way of rounding so we don't have to do all this modulo stuff?
             
-            var latZero:String
-            var lonZero:String
+            let LatLon = Functions.formatCoordinateString(userLocation.coordinate.latitude, lon: userLocation.coordinate.longitude)
             
-            if latitude * decimalPlaces % 100 == 0 {
-                latZero = "00"
-            } else if latitude * decimalPlaces % 10 == 0 {
-                latZero = "0"
-            } else {
-                latZero = ""
-            }
-            
-            if longitude * decimalPlaces % 100 == 0 {
-                lonZero = "00"
-            } else if longitude * decimalPlaces % 10 == 0 {
-                lonZero = "0"
-            } else {
-                lonZero = ""
-            }
-            
-            currentLatLabel.text = "\(latitude)\(latZero) \u{00B0}"
-            currentLonLabel.text = "\(longitude)\(lonZero) \u{00B0}"
+            currentLatLabel.text = LatLon.latString
+            currentLonLabel.text = LatLon.lonString
             currentAltLabel.text = "\(userLocation.altitude) m"
             
             // MARK: Add point to arrays
-            latitudes.append(latitude)
-            longitudes.append(longitude)
-//            altitudes.append(userLocation.altitude)
+            latitudes.append(LatLon.latitude)
+            longitudes.append(LatLon.longitude)
+            altitudes.append(Float(userLocation.altitude))
+            
+            // MARK: Change "average" labels
+            let avgCoords = Functions.averageCoordinates(latitudes, longitudes: longitudes)
+            let latLonString = Functions.formatCoordinateString(avgCoords.avgLat, lon: avgCoords.avgLon)
+            let avgAlt = Functions.averageOf(altitudes)
+            
+            avgLatLabel.text = latLonString.latString
+            avgLonLabel.text = latLonString.lonString
+            avgAltLabel.text = "\(avgAlt)"            
+            avgPointsLabel.text = "\(latitudes.count)"
             
             
         }

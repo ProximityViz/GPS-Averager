@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		ECD3002B1A753F2400F6CD9D /* AvgCoordsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3002A1A753F2400F6CD9D /* AvgCoordsVC.swift */; };
+		ECD3002D1A7543E000F6CD9D /* SavedCoordsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3002C1A7543E000F6CD9D /* SavedCoordsTVC.swift */; };
+		ECD3002F1A754DE900F6CD9D /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3002E1A754DE900F6CD9D /* Functions.swift */; };
 		ECD3FFD31A740ECA00F6CD9D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3FFD21A740ECA00F6CD9D /* AppDelegate.swift */; };
 		ECD3FFD51A740ECA00F6CD9D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3FFD41A740ECA00F6CD9D /* ViewController.swift */; };
 		ECD3FFD81A740ECA00F6CD9D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ECD3FFD61A740ECA00F6CD9D /* Main.storyboard */; };
@@ -30,6 +32,8 @@
 
 /* Begin PBXFileReference section */
 		ECD3002A1A753F2400F6CD9D /* AvgCoordsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvgCoordsVC.swift; sourceTree = "<group>"; };
+		ECD3002C1A7543E000F6CD9D /* SavedCoordsTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedCoordsTVC.swift; sourceTree = "<group>"; };
+		ECD3002E1A754DE900F6CD9D /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		ECD3FFCD1A740ECA00F6CD9D /* GPS Averager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GPS Averager.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ECD3FFD11A740ECA00F6CD9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ECD3FFD21A740ECA00F6CD9D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -86,12 +90,11 @@
 		ECD3FFCF1A740ECA00F6CD9D /* GPS Averager */ = {
 			isa = PBXGroup;
 			children = (
-				ECD3FFD21A740ECA00F6CD9D /* AppDelegate.swift */,
+				ECD3002E1A754DE900F6CD9D /* Functions.swift */,
 				ECD3FFD41A740ECA00F6CD9D /* ViewController.swift */,
 				ECD3002A1A753F2400F6CD9D /* AvgCoordsVC.swift */,
+				ECD3002C1A7543E000F6CD9D /* SavedCoordsTVC.swift */,
 				ECD3FFD61A740ECA00F6CD9D /* Main.storyboard */,
-				ECD3FFD91A740ECA00F6CD9D /* Images.xcassets */,
-				ECD3FFDB1A740ECA00F6CD9D /* LaunchScreen.xib */,
 				ECD3FFD01A740ECA00F6CD9D /* Supporting Files */,
 			);
 			path = "GPS Averager";
@@ -100,6 +103,9 @@
 		ECD3FFD01A740ECA00F6CD9D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				ECD3FFD91A740ECA00F6CD9D /* Images.xcassets */,
+				ECD3FFDB1A740ECA00F6CD9D /* LaunchScreen.xib */,
+				ECD3FFD21A740ECA00F6CD9D /* AppDelegate.swift */,
 				ECD3FFD11A740ECA00F6CD9D /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -232,7 +238,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECD3FFD51A740ECA00F6CD9D /* ViewController.swift in Sources */,
+				ECD3002D1A7543E000F6CD9D /* SavedCoordsTVC.swift in Sources */,
 				ECD3002B1A753F2400F6CD9D /* AvgCoordsVC.swift in Sources */,
+				ECD3002F1A754DE900F6CD9D /* Functions.swift in Sources */,
 				ECD3FFD31A740ECA00F6CD9D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
