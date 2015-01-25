@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>54D64B8F-6503-46D2-97F6-8BEFB2B42A5F</string>
+	<key>IDESourceControlProjectName</key>
+	<string>GPS Averager</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>9445A1D04788EF58DFA7D2FCA11B981419307D6D</key>
+		<string>https://github.com/mollietaylor/GPS-Averager.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>GPS Averager.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>9445A1D04788EF58DFA7D2FCA11B981419307D6D</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/mollietaylor/GPS-Averager.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>9445A1D04788EF58DFA7D2FCA11B981419307D6D</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>9445A1D04788EF58DFA7D2FCA11B981419307D6D</string>
+			<key>IDESourceControlWCCName</key>
+			<string>GPS%20Averager</string>
+		</dict>
+	</array>
+</dict>
+</plist>

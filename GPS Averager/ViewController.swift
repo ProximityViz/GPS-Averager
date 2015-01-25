@@ -31,9 +31,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     var isRunning:Bool!
     var mode:String!
     
-    var latitudes = [Float]()
-    var longitudes = [Float]()
+    var latitudes = [Double]()
+    var longitudes = [Double]()
     var altitudes = [Float]()
+    
+    let π = M_PI
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,8 +109,42 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     @IBAction func finishWasPressed(sender: UIButton) {
-
-    
+        
+        // FIXME: Maybe move this to its own function
+        
+        var avgX = 0 as Double
+        var avgY = 0 as Double
+        var avgZ = 0 as Double
+        var avgLat = 0 as Double
+        var avgLon = 0 as Double
+        
+        for (var i = 0; i < latitudes.count; i++) {
+            
+            // calculate cartesian coordinates
+            var radLat = latitudes[i] * π / 180
+            var radLon = longitudes[i] * π / 180
+            
+            // w1 & w2 = 0
+            // calculate weighted average
+            avgX += (cos(radLat) * cos(radLon))
+            avgY += (cos(radLat) * sin(radLon))
+            avgZ += sin(radLat)
+            
+        }
+        
+        // divide to get average
+        avgX /= Double(latitudes.count)
+        avgY /= Double(latitudes.count)
+        avgZ /= Double(latitudes.count)
+        
+        // convert to lat & long, in degrees
+        avgLat = atan2(avgZ, sqrt(avgX * avgX + avgY * avgY)) * 180 / π
+        avgLon = atan2(avgY, avgX) * 180 / π
+        
+        savedAverages.append(["Latitude" : "\(avgLat)", "Longitude" : "\(avgLon)", "Date" : "\(NSDate())"])
+        
+        println(savedAverages);
+        
     
     }
     
@@ -119,6 +155,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
         
         if self.isRunning == true {
             
+            // MARK: Change labels
             // FIXME: Is there a better way of rounding so we don't have to do all this modulo stuff?
             // If not, move this code to its own function that will be run any time we need to return a string for a label.
             var decimalPlaces = 1000000.0
@@ -147,6 +184,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate {
             currentLatLabel.text = "\(latitude)\(latZero) \u{00B0}"
             currentLonLabel.text = "\(longitude)\(lonZero) \u{00B0}"
             currentAltLabel.text = "\(userLocation.altitude) m"
+            
+            // MARK: Add point to arrays
+            latitudes.append(latitude)
+            longitudes.append(longitude)
+//            altitudes.append(userLocation.altitude)
+            
             
         }
         
