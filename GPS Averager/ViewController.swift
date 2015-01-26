@@ -39,6 +39,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     var longitudes = [Double]()
     var altitudes = [Float]()
     
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
     override func viewWillAppear(animated: Bool) {
         
         // reset mapView
@@ -54,8 +56,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         self.mapCentered = false
         self.mode = "Auto"
         self.startButton.setTitle("Start", forState: UIControlState.Normal)
+        savedAverages = defaults.objectForKey("savedAverages") as Array
         
-        //MARK: Geolocation
+        // MARK: Geolocation
         
         manager = CLLocationManager()
         manager.delegate = self
@@ -66,7 +69,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         // reset mapView
         mapView.removeAnnotations(mapView.annotations)
         
-        //MARK: Aesthetics
+        // MARK: Aesthetics
         
         self.startButton.layer.cornerRadius = 4
         self.startButton.layer.borderWidth = 1
@@ -141,6 +144,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         
         savedAverages.append(["Latitude" : "\(avgCoords.avgLat)", "Longitude" : "\(avgCoords.avgLon)", "Altitude": "\(avgAlt) m", "Points" : "\(latitudes.count)", "Date" : "\(formattedDate)"])
+//        defaults.setObject(savedAverages, forKey: "savedAverages")
+        defaults.setValue(savedAverages, forKey: "savedAverages")
         
         // reset
         latitudes = []
