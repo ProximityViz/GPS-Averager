@@ -10,6 +10,7 @@ import UIKit
 
 class Functions: NSObject {
     
+//    class func formatCoordinateString(#lat: Double, lon: Double, withFormat: String = "Decimal degrees") -> (latitude: Double, longitude: Double, latString: String, lonString: String) {
     class func formatCoordinateString(#lat: Double, lon: Double) -> (latitude: Double, longitude: Double, latString: String, lonString: String) {
         
         // FIXME: Is there a better way of rounding so we don't have to do all this modulo stuff?
@@ -18,27 +19,73 @@ class Functions: NSObject {
         var latitude = round(lat * decimalPlaces) / decimalPlaces
         var longitude = round(lon * decimalPlaces) / decimalPlaces
         
+        var latString:String
+        var lonString:String
+        
         var latZero:String
         var lonZero:String
         
-        if latitude * decimalPlaces % 100 == 0 {
-            latZero = "00"
-        } else if latitude * decimalPlaces % 10 == 0 {
-            latZero = "0"
-        } else {
-            latZero = ""
+        
+        switch coordFormat {
+            
+        case "Decimal minutes" :
+            
+            var latDeg = Int(floor(latitude))
+            var lonDeg = Int(floor(longitude))
+            var latMin = abs(latitude % 1) * 60
+            var lonMin = abs(longitude % 1) * 60
+            var latMinRound = round(latMin * 100000.0) / 100000.0
+            var lonMinRound = round(lonMin * 100000.0) / 100000.0
+            if latMinRound < 10 {latZero = "0"} else {latZero = ""}
+            if lonMinRound < 10 {lonZero = "0"} else {lonZero = ""}
+            
+            latString = "\(latDeg)\u{00B0} \(latZero)\(latMinRound)'"
+            lonString = "\(lonDeg)\u{00B0} \(lonZero)\(lonMinRound)'"
+
+        case "Degrees, minutes, seconds" :
+            
+            var latSecZero:String
+            var lonSecZero:String
+            
+            var latDeg = Int(floor(latitude))
+            var lonDeg = Int(floor(longitude))
+            var latMin = Int(floor(abs(latitude % 1) * 60))
+            var lonMin = Int(floor(abs(longitude % 1) * 60))
+            if latMin < 10 {latZero = "0"} else {latZero = ""}
+            if lonMin < 10 {lonZero = "0"} else {lonZero = ""}
+            var latSec = ((abs(latitude % 1) * 60) % 1) * 60
+            var lonSec = ((abs(longitude % 1) * 60) % 1) * 60
+            var latSecRound = round(latSec * 10000.0) / 10000.0
+            var lonSecRound = round(lonSec * 10000.0) / 10000.0
+            if latSecRound < 10 {latSecZero = "0"} else {latSecZero = ""}
+            if lonSecRound < 10 {lonSecZero = "0"} else {lonSecZero = ""}
+            
+            latString = "\(latDeg)\u{00B0} \(latZero)\(latMin)' \(latSecZero)\(latSecRound)\""
+            lonString = "\(lonDeg)\u{00B0} \(lonZero)\(lonMin)' \(lonSecZero)\(lonSecRound)\""
+            
+        default:
+            
+            if latitude * decimalPlaces % 100 == 0 {
+                latZero = "00"
+            } else if latitude * decimalPlaces % 10 == 0 {
+                latZero = "0"
+            } else {
+                latZero = ""
+            }
+            
+            if longitude * decimalPlaces % 100 == 0 {
+                lonZero = "00"
+            } else if longitude * decimalPlaces % 10 == 0 {
+                lonZero = "0"
+            } else {
+                lonZero = ""
+            }
+            
+            latString = "\(latitude)\(latZero)\u{00B0}"
+            lonString = "\(longitude)\(lonZero)\u{00B0}"
+            
         }
         
-        if longitude * decimalPlaces % 100 == 0 {
-            lonZero = "00"
-        } else if longitude * decimalPlaces % 10 == 0 {
-            lonZero = "0"
-        } else {
-            lonZero = ""
-        }
-        
-        var latString = "\(latitude)\(latZero)\u{00B0}"
-        var lonString = "\(longitude)\(lonZero)\u{00B0}"
         
         return (latitude, longitude, latString, lonString)
         

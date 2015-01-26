@@ -12,6 +12,8 @@ import CoreLocation
 
 var savedAverages = [[String:String]]()
 
+var coordFormat:String!
+
 class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     @IBOutlet weak var autoOrManual: UISegmentedControl!
@@ -57,12 +59,16 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         self.mode = "Auto"
         self.startButton.setTitle("Start", forState: UIControlState.Normal)
         
+        if coordFormat == nil {
+            coordFormat = "Decimal degrees"
+        }
+        
+        // MARK: NSUserDefaults
         if (defaults.objectForKey("savedAverages") != nil) {
             savedAverages = defaults.objectForKey("savedAverages") as Array
         }
         
         // MARK: Geolocation
-        
         manager = CLLocationManager()
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyBest

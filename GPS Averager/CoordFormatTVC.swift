@@ -49,6 +49,14 @@ class CoordFormatTVC: UITableViewController {
 
         return cell
     }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        coordFormat = coordFormatList[indexPath.row]["Name"]
+        
+        // TODO: dismiss view
+        
+    }
 
     /*
     // Override to support conditional editing of the table view.
