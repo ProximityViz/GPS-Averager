@@ -64,7 +64,7 @@ class AvgCoordsVC: UIViewController, MKMapViewDelegate {
 
     @IBAction func shareWasPressed(sender: UIBarButtonItem) {
         
-        var shareText = "Averaged coordinates: Latitude \(lat), Longitude \(lon)"
+        var shareText = "Averaged coordinates: Latitude: \(lat), Longitude: \(lon)"
         var activityViewController : UIActivityViewController = UIActivityViewController(activityItems: [shareText], applicationActivities: nil)
         presentViewController(activityViewController, animated: true, completion: nil)
         

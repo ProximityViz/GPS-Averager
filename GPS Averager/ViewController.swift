@@ -38,6 +38,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     var latitudes = [Double]()
     var longitudes = [Double]()
     var altitudes = [Float]()
+    
+    override func viewWillAppear(animated: Bool) {
+        
+        // reset mapView
+        mapView.removeAnnotations(mapView.annotations)
+        
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,15 +63,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         manager.requestWhenInUseAuthorization()
         manager.startUpdatingLocation()
         
+        // reset mapView
+        mapView.removeAnnotations(mapView.annotations)
+        
         //MARK: Aesthetics
         
         self.startButton.layer.cornerRadius = 4
         self.startButton.layer.borderWidth = 1
-        self.startButton.layer.borderColor = (UIColor (red:0.94, green:0.45, blue:0, alpha:1)).CGColor
+        self.startButton.layer.borderColor = (UIColor (red:1.00, green:0.23, blue:0.19, alpha:1)).CGColor
         
         self.finishButton.layer.cornerRadius = 4
         self.finishButton.layer.borderWidth = 1
-        self.finishButton.layer.borderColor = (UIColor (red:0.94, green:0.45, blue:0, alpha:1)).CGColor
+        self.finishButton.layer.borderColor = (UIColor (red:1.00, green:0.23, blue:0.19, alpha:1)).CGColor
         
     }
     
@@ -151,7 +161,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             // MARK: Zoom and center map
             var mapLat:CLLocationDegrees = userLocation.coordinate.latitude
             var mapLon:CLLocationDegrees = userLocation.coordinate.longitude
-            var span:MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
+            var span:MKCoordinateSpan = MKCoordinateSpanMake(0.005, 0.005)
             var location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(mapLat, mapLon)
             var region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
             
@@ -188,7 +198,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             // MARK: map points
             var mapLat:CLLocationDegrees = userLocation.coordinate.latitude
             var mapLon:CLLocationDegrees = userLocation.coordinate.longitude
-            var span:MKCoordinateSpan = MKCoordinateSpanMake(0.01, 0.01)
+            // TODO: change span to reflect where points are
+            var span:MKCoordinateSpan = MKCoordinateSpanMake(0.005, 0.005)
             var location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(mapLat, mapLon)
             var region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
             var annotation = MKPointAnnotation()

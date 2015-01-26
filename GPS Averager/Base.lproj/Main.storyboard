@@ -25,7 +25,7 @@
                                     <constraint firstAttribute="height" constant="44" id="st9-sC-ywS"/>
                                 </constraints>
                                 <state key="normal" title="Finish">
-                                    <color key="titleColor" red="0.94117647059999998" green="0.45098039220000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <variation key="default">
@@ -45,7 +45,7 @@
                                     <constraint firstAttribute="height" constant="44" id="mEw-Rt-rAp"/>
                                 </constraints>
                                 <state key="normal" title="Start">
-                                    <color key="titleColor" red="0.94117647059999998" green="0.45098039220000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="titleColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <variation key="default">
@@ -270,7 +270,7 @@
                                 <segment title="Auto"/>
                                 <segment title="Manual"/>
                             </segments>
-                            <color key="tintColor" red="0.94117647058823528" green="0.45098039215686275" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="tintColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <variation key="default">
                                 <mask key="constraints">
                                     <exclude reference="0wO-cB-UGc"/>
@@ -282,7 +282,7 @@
                             </connections>
                         </segmentedControl>
                         <barButtonItem key="rightBarButtonItem" image="menu" id="1h3-UL-P1r">
-                            <color key="tintColor" red="0.94117647058823528" green="0.45098039215686275" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="tintColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <segue destination="XzI-80-hyX" kind="show" id="6Wz-pi-ztL"/>
                             </connections>
@@ -535,14 +535,14 @@
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="dyH-DO-a5i"/>
                                     <barButtonItem title="Change Coordinate Format" id="Gzd-C3-HwV">
-                                        <color key="tintColor" red="0.94117647059999998" green="0.45098039220000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <segue destination="gbI-GO-LNg" kind="show" id="P5D-uv-5mj"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="c1C-VT-vnB"/>
                                     <barButtonItem title="Share" id="9Qx-Yo-xch">
-                                        <color key="tintColor" red="0.94117647059999998" green="0.45098039220000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="tintColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
                                             <action selector="shareWasPressed:" destination="omi-UF-5a9" id="oq6-EB-sDo"/>
                                         </connections>
@@ -619,7 +619,7 @@
                     </view>
                     <navigationItem key="navigationItem" title="Averaged Coordinates" id="MsD-LW-F5T">
                         <barButtonItem key="rightBarButtonItem" image="menu" width="44" id="Y3F-yh-miP">
-                            <color key="tintColor" red="0.94117647059999998" green="0.45098039220000002" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="tintColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
                                 <segue destination="XzI-80-hyX" kind="show" id="k3a-oS-COq"/>
                             </connections>
