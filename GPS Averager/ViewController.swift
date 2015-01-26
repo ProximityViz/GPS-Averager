@@ -56,7 +56,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         self.mapCentered = false
         self.mode = "Auto"
         self.startButton.setTitle("Start", forState: UIControlState.Normal)
-        savedAverages = defaults.objectForKey("savedAverages") as Array
+        
+        if (defaults.objectForKey("savedAverages") != nil) {
+            savedAverages = defaults.objectForKey("savedAverages") as Array
+        }
         
         // MARK: Geolocation
         

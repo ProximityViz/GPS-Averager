@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EC01EB8B1A76CADA009CA309 /* CoordFormatTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC01EB8A1A76CADA009CA309 /* CoordFormatTVC.swift */; };
 		ECD3002B1A753F2400F6CD9D /* AvgCoordsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3002A1A753F2400F6CD9D /* AvgCoordsVC.swift */; };
 		ECD3002D1A7543E000F6CD9D /* SavedCoordsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3002C1A7543E000F6CD9D /* SavedCoordsTVC.swift */; };
 		ECD3002F1A754DE900F6CD9D /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3002E1A754DE900F6CD9D /* Functions.swift */; };
@@ -31,6 +32,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EC01EB8A1A76CADA009CA309 /* CoordFormatTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoordFormatTVC.swift; sourceTree = "<group>"; };
 		ECD3002A1A753F2400F6CD9D /* AvgCoordsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvgCoordsVC.swift; sourceTree = "<group>"; };
 		ECD3002C1A7543E000F6CD9D /* SavedCoordsTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedCoordsTVC.swift; sourceTree = "<group>"; };
 		ECD3002E1A754DE900F6CD9D /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				ECD3FFD41A740ECA00F6CD9D /* ViewController.swift */,
 				ECD3002A1A753F2400F6CD9D /* AvgCoordsVC.swift */,
 				ECD3002C1A7543E000F6CD9D /* SavedCoordsTVC.swift */,
+				EC01EB8A1A76CADA009CA309 /* CoordFormatTVC.swift */,
 				ECD3FFD61A740ECA00F6CD9D /* Main.storyboard */,
 				ECD3FFD01A740ECA00F6CD9D /* Supporting Files */,
 			);
@@ -241,6 +244,7 @@
 				ECD3002D1A7543E000F6CD9D /* SavedCoordsTVC.swift in Sources */,
 				ECD3002B1A753F2400F6CD9D /* AvgCoordsVC.swift in Sources */,
 				ECD3002F1A754DE900F6CD9D /* Functions.swift in Sources */,
+				EC01EB8B1A76CADA009CA309 /* CoordFormatTVC.swift in Sources */,
 				ECD3FFD31A740ECA00F6CD9D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -435,6 +439,7 @@
 				ECD3FFEE1A740ECA00F6CD9D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		ECD3FFEF1A740ECA00F6CD9D /* Build configuration list for PBXNativeTarget "GPS AveragerTests" */ = {
 			isa = XCConfigurationList;
@@ -443,6 +448,7 @@
 				ECD3FFF11A740ECA00F6CD9D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

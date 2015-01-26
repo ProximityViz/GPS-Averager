@@ -12,14 +12,7 @@ class Functions: NSObject {
     
     class func formatCoordinateString(#lat: Double, lon: Double) -> (latitude: Double, longitude: Double, latString: String, lonString: String) {
         
-        // MARK: Change labels
         // FIXME: Is there a better way of rounding so we don't have to do all this modulo stuff?
-        // If not, move this code to its own function that will be run any time we need to return a string for a label.
-        
-        
-        // lat will be userLocation.coordinate.latitude
-        // lon will be userLocation.coordinate.longitude
-        
         
         var decimalPlaces = 1000000.0
         var latitude = round(lat * decimalPlaces) / decimalPlaces
@@ -54,9 +47,6 @@ class Functions: NSObject {
     class func averageCoordinates(latitudes: [Double], longitudes: [Double]) -> (avgLat: Double, avgLon: Double) {
         
         let π = M_PI
-        
-        
-        // FIXME: Maybe move this to its own function
         
         var avgX = 0 as Double
         var avgY = 0 as Double
