@@ -48,7 +48,7 @@ class SavedCoordsTVC: UITableViewController {
         let latToDisplay = coordsForCell["Latitude"]!
         let lonToDisplay = coordsForCell["Longitude"]!
         
-        let LatLon = Functions.formatCoordinateString((latToDisplay as NSString).doubleValue, lon: (lonToDisplay as NSString).doubleValue)
+        let LatLon = Functions.formatCoordinateString(lat: (latToDisplay as NSString).doubleValue, lon: (lonToDisplay as NSString).doubleValue)
         
         
         cell.textLabel?.text = "\(LatLon.latString), \(LatLon.lonString)"

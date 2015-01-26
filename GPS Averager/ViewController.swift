@@ -174,7 +174,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         // MARK: Collect points
         if self.isRunning == true {
             
-            let LatLon = Functions.formatCoordinateString(userLocation.coordinate.latitude, lon: userLocation.coordinate.longitude)
+            let LatLon = Functions.formatCoordinateString(lat: userLocation.coordinate.latitude, lon: userLocation.coordinate.longitude)
             
             currentLatLabel.text = LatLon.latString
             currentLonLabel.text = LatLon.lonString
@@ -187,7 +187,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             
             // MARK: Change "average" labels
             let avgCoords = Functions.averageCoordinates(latitudes, longitudes: longitudes)
-            let latLonString = Functions.formatCoordinateString(avgCoords.avgLat, lon: avgCoords.avgLon)
+            let latLonString = Functions.formatCoordinateString(lat: avgCoords.avgLat, lon: avgCoords.avgLon)
             let avgAlt = Functions.averageOf(altitudes)
             
             avgLatLabel.text = latLonString.latString

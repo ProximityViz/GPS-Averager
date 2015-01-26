@@ -10,7 +10,7 @@ import UIKit
 
 class Functions: NSObject {
     
-    class func formatCoordinateString(lat: Double, lon: Double) -> (latitude: Double, longitude: Double, latString: String, lonString: String) {
+    class func formatCoordinateString(#lat: Double, lon: Double) -> (latitude: Double, longitude: Double, latString: String, lonString: String) {
         
         // MARK: Change labels
         // FIXME: Is there a better way of rounding so we don't have to do all this modulo stuff?

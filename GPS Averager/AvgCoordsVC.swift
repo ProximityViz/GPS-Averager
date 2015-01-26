@@ -38,7 +38,7 @@ class AvgCoordsVC: UIViewController, MKMapViewDelegate {
         let latToDisplay = coordsToDisplay["Latitude"]!
         let lonToDisplay = coordsToDisplay["Longitude"]!
         
-        let LatLon = Functions.formatCoordinateString((latToDisplay as NSString).doubleValue, lon: (lonToDisplay as NSString).doubleValue)
+        let LatLon = Functions.formatCoordinateString(lat: (latToDisplay as NSString).doubleValue, lon: (lonToDisplay as NSString).doubleValue)
         
         lat = LatLon.latString
         lon = LatLon.lonString
