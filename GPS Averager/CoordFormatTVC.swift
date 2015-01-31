@@ -54,8 +54,6 @@ class CoordFormatTVC: UITableViewController {
         
         coordFormat = coordFormatList[indexPath.row]["Name"]
         
-        // TODO: dismiss view
-        
     }
 
     /*

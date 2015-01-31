@@ -122,8 +122,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     @IBAction func startWasPressed(sender: UIButton) {
         
-        println(LatLon)
-        
         if mode == "Auto" && isRunning == false {
             
             // mode is auto and has not begun yet
@@ -222,7 +220,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             
         }
         
-        savedAverages.append(["Latitude" : "\(avgCoords.avgLat)", "Longitude" : "\(avgCoords.avgLon)", "Altitude": "\(avgAlt) m", "Points" : "\(points)", "Date" : "\(formattedDate)"])
+//        savedAverages.append(["Latitude" : "\(avgCoords.avgLat)", "Longitude" : "\(avgCoords.avgLon)", "Altitude": "\(avgAlt) m", "Points" : "\(points)", "Date" : "\(formattedDate)"])
+        savedAverages.insert(["Latitude" : "\(avgCoords.avgLat)", "Longitude" : "\(avgCoords.avgLon)", "Altitude": "\(avgAlt) m", "Points" : "\(points)", "Date" : "\(formattedDate)"], atIndex: 0)
         //        defaults.setObject(savedAverages, forKey: "savedAverages")
         defaults.setValue(savedAverages, forKey: "savedAverages")
         

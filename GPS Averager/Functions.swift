@@ -29,11 +29,20 @@ class Functions: NSObject {
         switch coordFormat {
             
         case "Decimal minutes" :
-            
-            var latDeg = Int(floor(latitude))
-            var lonDeg = Int(floor(longitude))
-            var latMin = abs(latitude % 1) * 60
-            var lonMin = abs(longitude % 1) * 60
+            var latDeg:Int
+            var lonDeg: Int
+            if latitude < 0 {
+                latDeg = Int(floor(abs(latitude))) * -1
+            } else {
+                latDeg = Int(floor(latitude))
+            }
+            if longitude < 0 {
+                lonDeg = Int(floor(abs(longitude))) * -1
+            } else {
+                lonDeg = Int(floor(longitude))
+            }
+            var latMin = fabs(latitude % 1) * 60
+            var lonMin = fabs(longitude % 1) * 60
             var latMinRound = round(latMin * 100000.0) / 100000.0
             var lonMinRound = round(lonMin * 100000.0) / 100000.0
             if latMinRound < 10 {latZero = "0"} else {latZero = ""}
@@ -49,12 +58,12 @@ class Functions: NSObject {
             
             var latDeg = Int(floor(latitude))
             var lonDeg = Int(floor(longitude))
-            var latMin = Int(floor(abs(latitude % 1) * 60))
-            var lonMin = Int(floor(abs(longitude % 1) * 60))
+            var latMin = Int(floor(fabs(latitude % 1) * 60))
+            var lonMin = Int(floor(fabs(longitude % 1) * 60))
             if latMin < 10 {latZero = "0"} else {latZero = ""}
             if lonMin < 10 {lonZero = "0"} else {lonZero = ""}
-            var latSec = ((abs(latitude % 1) * 60) % 1) * 60
-            var lonSec = ((abs(longitude % 1) * 60) % 1) * 60
+            var latSec = ((fabs(latitude % 1) * 60) % 1) * 60
+            var lonSec = ((fabs(longitude % 1) * 60) % 1) * 60
             var latSecRound = round(latSec * 10000.0) / 10000.0
             var lonSecRound = round(lonSec * 10000.0) / 10000.0
             if latSecRound < 10 {latSecZero = "0"} else {latSecZero = ""}

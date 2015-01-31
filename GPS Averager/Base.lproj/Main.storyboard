@@ -35,7 +35,7 @@
                                 </variation>
                                 <connections>
                                     <action selector="finishWasPressed:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="MkO-5E-4Ue"/>
-                                    <segue destination="omi-UF-5a9" kind="show" id="KG0-qp-prj"/>
+                                    <segue destination="Ag2-tA-4tl" kind="presentation" id="gqs-XI-2kH"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vr7-D5-qkz">
@@ -259,6 +259,12 @@
                     </view>
                     <navigationItem key="navigationItem" id="9T2-4s-xS2">
                         <nil key="title"/>
+                        <barButtonItem key="leftBarButtonItem" image="menu" id="1h3-UL-P1r">
+                            <color key="tintColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <segue destination="GzN-HV-psZ" kind="presentation" id="zq1-o4-Esj"/>
+                            </connections>
+                        </barButtonItem>
                         <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="MMZ-KS-Khn">
                             <rect key="frame" x="77" y="-1" width="446" height="45"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -281,12 +287,6 @@
                                 <action selector="changeMode:" destination="vXZ-lx-hvc" eventType="valueChanged" id="vcz-y9-caZ"/>
                             </connections>
                         </segmentedControl>
-                        <barButtonItem key="rightBarButtonItem" image="menu" id="1h3-UL-P1r">
-                            <color key="tintColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <connections>
-                                <segue destination="XzI-80-hyX" kind="show" id="6Wz-pi-ztL"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="autoOrManual" destination="MMZ-KS-Khn" id="cDP-xa-Rei"/>
@@ -305,14 +305,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1131" y="485"/>
+            <point key="canvasLocation" x="393" y="497"/>
         </scene>
         <!--Saved Coordinates-->
         <scene sceneID="2bX-Tg-Yy7">
             <objects>
                 <tableViewController title="Saved Coordinates" id="XzI-80-hyX" customClass="SavedCoordsTVC" customModule="GPS_Averager" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="LHD-WC-pVG">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -336,7 +336,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="omi-UF-5a9" kind="show" identifier="showSaved" id="JMF-OL-vSn"/>
+                                    <segue destination="Ag2-tA-4tl" kind="presentation" id="4Ly-Y5-MUS"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -345,17 +345,26 @@
                             <outlet property="delegate" destination="XzI-80-hyX" id="IRt-lp-hvM"/>
                         </connections>
                     </tableView>
+                    <toolbarItems>
+                        <barButtonItem title="Change Coordinate Format" id="hnc-gO-gAn">
+                            <color key="tintColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <segue destination="gbI-GO-LNg" kind="show" id="Tw5-65-NNJ"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="Saved Coordinates" id="1c2-zl-unt">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="ic9-iX-MMT">
                             <connections>
-                                <segue destination="b6E-Pk-2AD" kind="presentation" id="4Pb-oK-hCh"/>
+                                <segue destination="b6E-Pk-2AD" kind="presentation" id="hgg-SQ-N1f"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics" translucent="NO"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KjQ-sw-w4O" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1131" y="1248"/>
+            <point key="canvasLocation" x="393" y="1214"/>
         </scene>
         <!--Averaged Coordinates-->
         <scene sceneID="FBZ-7Z-dBc">
@@ -537,7 +546,7 @@
                                     <barButtonItem title="Change Coordinate Format" id="Gzd-C3-HwV">
                                         <color key="tintColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <connections>
-                                            <segue destination="gbI-GO-LNg" kind="show" id="P5D-uv-5mj"/>
+                                            <segue destination="gbI-GO-LNg" kind="show" id="6oo-Im-Kjk"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="c1C-VT-vnB"/>
@@ -618,10 +627,15 @@
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Averaged Coordinates" id="MsD-LW-F5T">
-                        <barButtonItem key="rightBarButtonItem" image="menu" width="44" id="Y3F-yh-miP">
+                        <barButtonItem key="leftBarButtonItem" image="menu" width="44" id="Y3F-yh-miP">
                             <color key="tintColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
-                                <segue destination="XzI-80-hyX" kind="show" id="k3a-oS-COq"/>
+                                <segue destination="GzN-HV-psZ" kind="presentation" id="g14-Jp-Dzf"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="qib-IQ-jRS">
+                            <connections>
+                                <segue destination="b6E-Pk-2AD" kind="presentation" id="2qa-z4-J2R"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -635,14 +649,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4ry-0F-0ql" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="319" y="1248"/>
+            <point key="canvasLocation" x="1797" y="497"/>
         </scene>
         <!--Coordinate Formats-->
         <scene sceneID="BxS-8D-eZF">
             <objects>
                 <tableViewController title="Coordinate Formats" id="gbI-GO-LNg" customClass="CoordFormatTVC" customModule="GPS_Averager" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="91x-DY-lzZ">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -675,7 +689,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MOd-MG-9hW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="319" y="1941"/>
+            <point key="canvasLocation" x="1089" y="1214"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="l83-r6-MuF">
@@ -693,14 +707,52 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c4A-ft-I4c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="319" y="485"/>
+            <point key="canvasLocation" x="-339" y="497"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="afz-Zt-5Ok">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ag2-tA-4tl" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="YIg-kN-2OO">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="omi-UF-5a9" kind="relationship" relationship="rootViewController" id="Pae-b2-fJ9"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vj8-gL-xjE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1089" y="497"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="fcE-ca-2X1">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="GzN-HV-psZ" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="LVT-fO-etD">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="XzI-80-hyX" kind="relationship" relationship="rootViewController" id="K4w-8W-Q14"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VvG-g2-hf7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-339" y="1214"/>
         </scene>
     </scenes>
     <resources>
         <image name="menu" width="44" height="44"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="KG0-qp-prj"/>
-        <segue reference="6Wz-pi-ztL"/>
+        <segue reference="hgg-SQ-N1f"/>
+        <segue reference="zq1-o4-Esj"/>
+        <segue reference="Tw5-65-NNJ"/>
+        <segue reference="4Ly-Y5-MUS"/>
     </inferredMetricsTieBreakers>
 </document>
