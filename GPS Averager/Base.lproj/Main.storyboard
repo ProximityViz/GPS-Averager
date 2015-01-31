@@ -700,7 +700,7 @@
         <image name="menu" width="44" height="44"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="k3a-oS-COq"/>
         <segue reference="KG0-qp-prj"/>
+        <segue reference="6Wz-pi-ztL"/>
     </inferredMetricsTieBreakers>
 </document>
