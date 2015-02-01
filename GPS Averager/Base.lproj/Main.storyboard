@@ -679,6 +679,9 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <segue destination="G8n-VP-wgz" kind="unwind" identifier="unwind" unwindAction="unwindSegue:" id="vdp-Bq-a28"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -688,6 +691,7 @@
                     </tableView>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MOd-MG-9hW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="G8n-VP-wgz" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="1089" y="1214"/>
         </scene>

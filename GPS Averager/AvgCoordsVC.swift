@@ -33,20 +33,12 @@ class AvgCoordsVC: UIViewController, MKMapViewDelegate {
         }
         
         // FIXME: This VC should actually display whatever coords it's given, not always the most recent ones
-//        var coordsToDisplay = savedAverages[savedAverages.count - 1]
+        //        var coordsToDisplay = savedAverages[savedAverages.count - 1]
         
         let latToDisplay = coordsToDisplay["Latitude"]!
         let lonToDisplay = coordsToDisplay["Longitude"]!
         
-        let LatLon = Functions.formatCoordinateString(lat: (latToDisplay as NSString).doubleValue, lon: (lonToDisplay as NSString).doubleValue)
-        
-        lat = LatLon.latString
-        lon = LatLon.lonString
-        
-        avgLatLabel.text = lat
-        avgLonLabel.text = lon
-        avgAltLabel.text = coordsToDisplay["Altitude"]
-        avgPointsLabel.text = coordsToDisplay["Points"]
+        displayCoords(latToDisplay: latToDisplay, lonToDisplay: lonToDisplay)
         
         // MARK: map point
         var mapLat:CLLocationDegrees = NSString(string: latToDisplay).doubleValue
@@ -75,15 +67,29 @@ class AvgCoordsVC: UIViewController, MKMapViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func displayCoords(#latToDisplay: String, lonToDisplay: String) {
+        
+        let LatLon = Functions.formatCoordinateString(lat: (latToDisplay as NSString).doubleValue, lon: (lonToDisplay as NSString).doubleValue)
+        
+        lat = LatLon.latString
+        lon = LatLon.lonString
+        
+        avgLatLabel.text = lat
+        avgLonLabel.text = lon
+        avgAltLabel.text = coordsToDisplay["Altitude"]
+        avgPointsLabel.text = coordsToDisplay["Points"]
+        
     }
-    */
+    
+    // MARK: - Navigation
+    
+    @IBAction func unwindSegue(segue: UIStoryboardSegue) {
+        
+        let latToDisplay = coordsToDisplay["Latitude"]!
+        let lonToDisplay = coordsToDisplay["Longitude"]!
+        
+        displayCoords(latToDisplay: latToDisplay, lonToDisplay: lonToDisplay)
+        
+    }
 
 }

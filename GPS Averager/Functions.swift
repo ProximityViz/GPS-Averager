@@ -25,12 +25,13 @@ class Functions: NSObject {
         var latZero:String
         var lonZero:String
         
+        var latDeg:Int
+        var lonDeg: Int
         
         switch coordFormat {
             
         case "Decimal minutes" :
-            var latDeg:Int
-            var lonDeg: Int
+            
             if latitude < 0 {
                 latDeg = Int(floor(abs(latitude))) * -1
             } else {
@@ -56,8 +57,16 @@ class Functions: NSObject {
             var latSecZero:String
             var lonSecZero:String
             
-            var latDeg = Int(floor(latitude))
-            var lonDeg = Int(floor(longitude))
+            if latitude < 0 {
+                latDeg = Int(floor(abs(latitude))) * -1
+            } else {
+                latDeg = Int(floor(latitude))
+            }
+            if longitude < 0 {
+                lonDeg = Int(floor(abs(longitude))) * -1
+            } else {
+                lonDeg = Int(floor(longitude))
+            }
             var latMin = Int(floor(fabs(latitude % 1) * 60))
             var lonMin = Int(floor(fabs(longitude % 1) * 60))
             if latMin < 10 {latZero = "0"} else {latZero = ""}

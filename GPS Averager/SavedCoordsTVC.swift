@@ -71,18 +71,6 @@ class SavedCoordsTVC: UITableViewController {
         return indexPath
         
     }
-    
-    // TODO: in either prepareForSegue or didSelectRowAtIndexPath,
-    // pass along coordsToDisplay to the AvgCoordsVC
-    // can be based on the date displayed in the cell
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
-    }
-    */
 
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -121,6 +109,13 @@ class SavedCoordsTVC: UITableViewController {
             newVC.coordsToDisplay = sendCoords
             
         }
+        
+    }
+    
+    @IBAction func unwindSegue(segue: UIStoryboardSegue) {
+
+        tableView.reloadData()
+        
     }
     
     override func viewWillDisappear(animated: Bool) {
