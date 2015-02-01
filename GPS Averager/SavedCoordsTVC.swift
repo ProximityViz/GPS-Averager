@@ -10,6 +10,10 @@ import UIKit
 
 class SavedCoordsTVC: UITableViewController {
     
+    @IBOutlet weak var changeFormatButton: UIBarButtonItem!
+    
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
     var sendCoords = [String : String]()
 
     override func viewWillAppear(animated: Bool) {
@@ -20,6 +24,14 @@ class SavedCoordsTVC: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        savedAverages = defaults.objectForKey("savedAverages") as Array
+        
+        tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
+        tableView.separatorInset = UIEdgeInsetsZero
+        
+        changeFormatButton.setTitleTextAttributes([NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 15.0)!], forState: UIControlState.Normal)
+        UIToolbar.appearance().barTintColor = UIColor.whiteColor()
         
     }
 
@@ -36,11 +48,27 @@ class SavedCoordsTVC: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return savedAverages.count
     }
+    
+    // MARK: Cell separators
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 60.0
+    }
+    
+    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+        cell.separatorInset = UIEdgeInsetsZero
+        cell.layoutMargins = UIEdgeInsetsZero
+        cell.preservesSuperviewLayoutMargins = false
+    }
 
+    // MARK: Cells
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         
-        // TODO: reverse order of cells (make sure to also reverse in willSelectRowAtIndexPath, if needed
+        cell.backgroundColor = UIColor.clearColor()
+        cell.backgroundView = UIImageView(image: UIImage(named: "cell texture"))
+        cell.accessoryView = UIImageView(image: UIImage(named: "accessory"))
+//        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"accessory.png"]];
+
         
         var coordsForCell = savedAverages[indexPath.row]
         
@@ -77,6 +105,7 @@ class SavedCoordsTVC: UITableViewController {
         if editingStyle == .Delete {
             savedAverages.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            defaults.setValue(savedAverages, forKey: "savedAverages")
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    

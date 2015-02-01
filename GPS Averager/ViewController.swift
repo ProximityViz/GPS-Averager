@@ -85,9 +85,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         }
         
         // MARK: NSUserDefaults
-        if (defaults.objectForKey("savedAverages") != nil) {
+//        if (defaults.objectForKey("savedAverages") != nil) {
             savedAverages = defaults.objectForKey("savedAverages") as Array
-        }
+//        }
         
         // MARK: Geolocation
         manager = CLLocationManager()
