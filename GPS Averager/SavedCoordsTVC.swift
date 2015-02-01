@@ -115,8 +115,9 @@ class SavedCoordsTVC: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if (segue.identifier == "showSaved") {
-            let newVC = segue.destinationViewController as AvgCoordsVC
             
+            let navController: UINavigationController = segue.destinationViewController as UINavigationController
+            let newVC = navController.topViewController as AvgCoordsVC
             newVC.coordsToDisplay = sendCoords
             
         }

@@ -336,7 +336,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="Ag2-tA-4tl" kind="presentation" id="4Ly-Y5-MUS"/>
+                                    <segue destination="Ag2-tA-4tl" kind="presentation" identifier="showSaved" id="4Ly-Y5-MUS"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

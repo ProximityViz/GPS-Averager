@@ -28,7 +28,7 @@ class AvgCoordsVC: UIViewController, MKMapViewDelegate {
         
         if coordsToDisplay == [:] {
             
-            coordsToDisplay = savedAverages[savedAverages.count - 1]
+            coordsToDisplay = savedAverages.first!
             
         }
         
