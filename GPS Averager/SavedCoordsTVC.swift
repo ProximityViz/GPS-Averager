@@ -65,10 +65,7 @@ class SavedCoordsTVC: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         
         cell.backgroundColor = UIColor.clearColor()
-        cell.backgroundView = UIImageView(image: UIImage(named: "cell texture"))
         cell.accessoryView = UIImageView(image: UIImage(named: "accessory"))
-//        cell.accessoryView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"accessory.png"]];
-
         
         var coordsForCell = savedAverages[indexPath.row]
         
@@ -110,21 +107,6 @@ class SavedCoordsTVC: UITableViewController {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
     }
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     // MARK: - Navigation
 

@@ -39,7 +39,6 @@ class AvgCoordsVC: UIViewController, MKMapViewDelegate {
             
         }
         
-        // FIXME: This VC should actually display whatever coords it's given, not always the most recent ones
         //        var coordsToDisplay = savedAverages[savedAverages.count - 1]
         
         let latToDisplay = coordsToDisplay["Latitude"]!

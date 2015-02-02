@@ -34,7 +34,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     var manager:CLLocationManager!
     var isRunning:Bool!
-//    var mapCentered:Bool!
     var mode:String!
     
     var LatLon: (latitude: Double, longitude: Double, latString: String, lonString:String)!
@@ -59,15 +58,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         mapView.removeAnnotations(mapView.annotations)
         
         // reset labels
-        // TODO: should this reset to "current"?
-//        currentLabel.text = ""
-        currentLatLabel.text = ""
-        currentLonLabel.text = ""
-        currentAltLabel.text = ""
-        avgLatLabel.text = ""
-        avgLonLabel.text = ""
-        avgAltLabel.text = ""
-        avgPointsLabel.text = ""
+        resetLabels()
         
     }
 
@@ -76,7 +67,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         // TODO: These defaults will change once the user has the option of defaulting to manual mode
         isRunning = false
-//        mapCentered = false
         mode = "Auto"
         startButton.setTitle("Start", forState: UIControlState.Normal)
         
@@ -92,7 +82,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         // MARK: Geolocation
         manager = CLLocationManager()
         manager.delegate = self
-        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.desiredAccuracy = kCLLocationAccuracyBest // FIXME: should this be kCLLocationAccuracyBestForNavigation?
         manager.requestWhenInUseAuthorization()
         manager.startUpdatingLocation()
         
@@ -112,11 +102,23 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     @IBAction func changeMode(sender: UISegmentedControl) {
         
-        var title = (autoOrManual.selectedSegmentIndex == 0) ? "Start" : "Add Point"
-        mode = (autoOrManual.selectedSegmentIndex == 0) ? "Auto" : "Manual"
-        currentLabel.text = (autoOrManual.selectedSegmentIndex == 0) ? "Most Recent" : "Current"
-        isRunning = (autoOrManual.selectedSegmentIndex == 0) ? false : true
-        startButton.setTitle(title, forState: UIControlState.Normal)
+        // check for unsaved data
+        if latitudes.count != 0 {
+            
+            isRunning = false
+            displayAlert("changeMode")
+            
+        } else {
+            
+            // TODO: make sure part of this also runs when you click "no" on the alert
+            
+            var title = (autoOrManual.selectedSegmentIndex == 0) ? "Start" : "Add Point"
+            mode = (autoOrManual.selectedSegmentIndex == 0) ? "Auto" : "Manual"
+            currentLabel.text = (autoOrManual.selectedSegmentIndex == 0) ? "Most Recent" : "Current"
+            isRunning = (autoOrManual.selectedSegmentIndex == 0) ? false : true
+            startButton.setTitle(title, forState: UIControlState.Normal)
+            
+        }
         
     }
     
@@ -140,9 +142,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             
             isRunning = false
             startButton.setTitle("Start", forState: UIControlState.Normal)
-            // TODO: maybe change button color?
             
-            // change label colors and/or column heading text to indicate "current" point is old
             currentLabel.text = "Most Recent"
 
             
@@ -152,8 +152,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             manualLats.append(LatLon.latitude)
             manualLons.append(LatLon.longitude)
             manualAlts.append(Float(userLocation.altitude))
-            
-            println(manualLats)
             
             currentLatLabel.textColor = boldColor
             currentLonLabel.textColor = boldColor
@@ -182,14 +180,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             mapView.setRegion(region, animated: true)
             mapView.addAnnotation(annotation)
             
-            
-            
         }
         
     }
     
     @IBAction func finishWasPressed(sender: UIButton) {
-        // FIXME: add code for manual mode
+        
+        // TODO: Remove this if possible (just call finishWasPressed elsewhere)
+        finishCollecting()
+        
+    }
+    
+    func finishCollecting() {
         
         // format date
         var dateFormatter = NSDateFormatter()
@@ -202,16 +204,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         var points:Int = 0
         
         if mode == "Auto" {
-        
+            
             isRunning = false
             
             avgCoords = Functions.averageCoordinates(latitudes, longitudes: longitudes)
             
             // average the altitudes
-            // FIXME: is there a built-in average function?
             avgAlt = Functions.averageOf(altitudes)
             points = latitudes.count
-        
+            
         } else {
             
             avgCoords = Functions.averageCoordinates(manualLats, longitudes: manualLons)
@@ -220,41 +221,37 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             
         }
         
-//        savedAverages.append(["Latitude" : "\(avgCoords.avgLat)", "Longitude" : "\(avgCoords.avgLon)", "Altitude": "\(avgAlt) m", "Points" : "\(points)", "Date" : "\(formattedDate)"])
         savedAverages.insert(["Latitude" : "\(avgCoords.avgLat)", "Longitude" : "\(avgCoords.avgLon)", "Altitude": "\(avgAlt) m", "Points" : "\(points)", "Date" : "\(formattedDate)"], atIndex: 0)
-        //        defaults.setObject(savedAverages, forKey: "savedAverages")
         defaults.setValue(savedAverages, forKey: "savedAverages")
         
         // reset
-        latitudes = []
-        longitudes = []
-        altitudes = []
-        manualLats = []
-        manualLons = []
-        manualAlts = []
+        resetPoints()
         avgPointsLabel.text = ""
         
     }
-    
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         
         userLocation = locations[0] as CLLocation
         
-//        if !mapCentered {
-        
-        // MARK: Zoom and center map
-        var mapLat:CLLocationDegrees = userLocation.coordinate.latitude
-        var mapLon:CLLocationDegrees = userLocation.coordinate.longitude
-        var span:MKCoordinateSpan = MKCoordinateSpanMake(0.005, 0.005)
-        var location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(mapLat, mapLon)
-        var region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
-        
-        mapView.setRegion(region, animated: true)
-//            mapCentered = true
-        
-//        }
-        
+        // MARK: Center and zoom
+        if latitudes.count == 0 && manualLats.count == 0 {
+            
+            // zoom and center map to userLocation
+            var mapLat:CLLocationDegrees = userLocation.coordinate.latitude
+            var mapLon:CLLocationDegrees = userLocation.coordinate.longitude
+            var span:MKCoordinateSpan = MKCoordinateSpanMake(0.005, 0.005)
+            var location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(mapLat, mapLon)
+            var region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
+            
+            mapView.setRegion(region, animated: true)
+            
+        } else {
+            
+            // zoom to annotations
+            mapView.showAnnotations(mapView.annotations, animated: true)
+            
+        }
         
         // MARK: Collect points
         if isRunning == true {
@@ -303,6 +300,92 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             }
             
         }
+        
+    }
+    
+    func resetLabels() {
+    
+        // TODO: should this reset to "current"?
+        //        currentLabel.text = ""
+        currentLatLabel.text = ""
+        currentLonLabel.text = ""
+        currentAltLabel.text = ""
+        avgLatLabel.text = ""
+        avgLonLabel.text = ""
+        avgAltLabel.text = ""
+        avgPointsLabel.text = ""
+        
+    }
+    
+    func resetPoints() {
+        
+        latitudes = []
+        longitudes = []
+        altitudes = []
+        manualLats = []
+        manualLons = []
+        manualAlts = []
+        
+    }
+    
+    func displayAlert(navigatingTo: String) {
+        
+        // TODO: Also display alert when menu button is tapped, if latitudes.count != 0
+        
+        let alertController = UIAlertController(title: "Your Points Have Not Been Saved", message: "Would you like to save them now?", preferredStyle: .Alert)
+        
+        let cancelAction = UIAlertAction(title: "No", style: .Cancel) { (action) in
+            // reset points
+            self.resetPoints()
+            self.resetLabels()
+            
+            // segue to whatever was tapped on:
+            if navigatingTo == "changeMode" {
+                self.changeMode(self.autoOrManual)
+            } else if navigatingTo == "savedCoords" {
+                self.performSegueWithIdentifier("savedCoordsSegue", sender: self)
+            }
+            
+        }
+        
+        alertController.addAction(cancelAction)
+        
+        let OKAction = UIAlertAction(title: "Yes", style: .Default) { (action) in
+            
+            self.finishCollecting()
+            self.performSegueWithIdentifier("finishSegue", sender: self)
+            
+        }
+        
+        alertController.addAction(OKAction)
+        
+        self.presentViewController(alertController, animated: true) {
+            // ...
+        }
+        
+    }
+    
+    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+        
+        if identifier! == "savedCoordsSegue" {
+            
+//            displayAlert("savedCoords")
+            
+            // check for unsaved data
+            if latitudes.count != 0 {
+
+                isRunning = false
+                displayAlert("savedCoords")
+                return false
+
+            } else {
+                return true
+            }
+            
+            
+        }
+        
+        return true
         
     }
 
