@@ -13,8 +13,6 @@ class Functions: NSObject {
 //    class func formatCoordinateString(#lat: Double, lon: Double, withFormat: String = "Decimal degrees") -> (latitude: Double, longitude: Double, latString: String, lonString: String) {
     class func formatCoordinateString(#lat: Double, lon: Double) -> (latitude: Double, longitude: Double, latString: String, lonString: String) {
         
-        // FIXME: Is there a better way of rounding so we don't have to do all this modulo stuff?
-        
         var decimalPlaces = 1000000.0
         var latitude = round(lat * decimalPlaces) / decimalPlaces
         var longitude = round(lon * decimalPlaces) / decimalPlaces

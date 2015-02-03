@@ -110,8 +110,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             
         } else {
             
-            // TODO: make sure part of this also runs when you click "no" on the alert
-            
             var title = (autoOrManual.selectedSegmentIndex == 0) ? "Start" : "Add Point"
             mode = (autoOrManual.selectedSegmentIndex == 0) ? "Auto" : "Manual"
             currentLabel.text = (autoOrManual.selectedSegmentIndex == 0) ? "Most Recent" : "Current"
@@ -166,16 +164,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             avgPointsLabel.text = "\(manualLats.count)"
             
             // map points
-            var mapLat:CLLocationDegrees = userLocation.coordinate.latitude
-            var mapLon:CLLocationDegrees = userLocation.coordinate.longitude
-            // TODO: change span to reflect where points are
-            var span:MKCoordinateSpan = MKCoordinateSpanMake(0.005, 0.005)
-            var location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(mapLat, mapLon)
-            var region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
-            var annotation = MKPointAnnotation()
+            let mapLat:CLLocationDegrees = userLocation.coordinate.latitude
+            let mapLon:CLLocationDegrees = userLocation.coordinate.longitude
+            let location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(mapLat, mapLon)
+            let annotation = MKPointAnnotation()
             annotation.coordinate = location
             
-            mapView.setRegion(region, animated: true)
             mapView.addAnnotation(annotation)
             
         }
@@ -184,8 +178,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     @IBAction func finishWasPressed(sender: AnyObject) {
         
+        if latitudes.count == 0 && manualLats.count == 0 {
+            
+            // transition and don't save anything
+            displayFinishAlert()
+            
+        }
+        
         // format date
-        var dateFormatter = NSDateFormatter()
+        let dateFormatter = NSDateFormatter()
         dateFormatter.dateStyle = .LongStyle
         dateFormatter.timeStyle = .LongStyle
         let formattedDate = dateFormatter.stringFromDate(NSDate())
@@ -212,8 +213,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             
         }
         
-        savedAverages.insert(["Latitude" : "\(avgCoords.avgLat)", "Longitude" : "\(avgCoords.avgLon)", "Altitude": "\(avgAlt) m", "Points" : "\(points)", "Date" : "\(formattedDate)"], atIndex: 0)
-        defaults.setValue(savedAverages, forKey: "savedAverages")
+        // only save if there are points
+        if latitudes.count != 0 || manualLats.count != 0 {
+            
+            savedAverages.insert(["Latitude" : "\(avgCoords.avgLat)", "Longitude" : "\(avgCoords.avgLon)", "Altitude": "\(avgAlt) m", "Points" : "\(points)", "Date" : "\(formattedDate)"], atIndex: 0)
+            defaults.setValue(savedAverages, forKey: "savedAverages")
+            
+        }
         
         // reset
         resetPoints()
@@ -229,11 +235,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         if latitudes.count == 0 && manualLats.count == 0 {
             
             // zoom and center map to userLocation
-            var mapLat:CLLocationDegrees = userLocation.coordinate.latitude
-            var mapLon:CLLocationDegrees = userLocation.coordinate.longitude
-            var span:MKCoordinateSpan = MKCoordinateSpanMake(0.005, 0.005)
-            var location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(mapLat, mapLon)
-            var region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
+            let mapLat:CLLocationDegrees = userLocation.coordinate.latitude
+            let mapLon:CLLocationDegrees = userLocation.coordinate.longitude
+            let span:MKCoordinateSpan = MKCoordinateSpanMake(0.005, 0.005)
+            let location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(mapLat, mapLon)
+            let region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
             
             mapView.setRegion(region, animated: true)
             
@@ -276,10 +282,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 avgPointsLabel.text = "\(latitudes.count)"
                 
                 // map points
-                var mapLat:CLLocationDegrees = userLocation.coordinate.latitude
-                var mapLon:CLLocationDegrees = userLocation.coordinate.longitude
-                var location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(mapLat, mapLon)
-                var annotation = MKPointAnnotation()
+                let mapLat:CLLocationDegrees = userLocation.coordinate.latitude
+                let mapLon:CLLocationDegrees = userLocation.coordinate.longitude
+                let location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(mapLat, mapLon)
+                let annotation = MKPointAnnotation()
                 annotation.coordinate = location
                 
                 mapView.addAnnotation(annotation)
@@ -316,6 +322,31 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
     }
     
+    func displayFinishAlert() {
+        
+        let alertController = UIAlertController(title: "No Points Have Been Collected", message: "Would you like to continue?", preferredStyle: .Alert)
+        
+        let cancelAction = UIAlertAction(title: "No", style: .Cancel) { (action) -> Void in
+            
+            
+            
+        }
+        
+        alertController.addAction(cancelAction)
+        
+        let OKAction = UIAlertAction(title: "Yes", style: .Default) { (action) -> Void in
+            
+            let navC = self.storyboard?.instantiateViewControllerWithIdentifier("SavedCoordsNavC") as UINavigationController
+            self.presentViewController(navC, animated: true, completion: nil)
+            
+        }
+        
+        alertController.addAction(OKAction)
+        
+        self.presentViewController(alertController, animated: true, completion: nil)
+        
+    }
+    
     func displayAlert(navigatingTo: String) {
         
         let alertController = UIAlertController(title: "Your Points Have Not Been Saved", message: "Would you like to save them now?", preferredStyle: .Alert)
@@ -345,9 +376,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         alertController.addAction(OKAction)
         
-        self.presentViewController(alertController, animated: true) {
-            // ...
-        }
+        self.presentViewController(alertController, animated: true, completion: nil)
         
     }
     

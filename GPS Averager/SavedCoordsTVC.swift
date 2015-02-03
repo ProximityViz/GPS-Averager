@@ -37,7 +37,7 @@ class SavedCoordsTVC: UITableViewController {
 
     @IBAction func addWasPressed(sender: AnyObject) {
         
-        var rootVC = storyboard?.instantiateViewControllerWithIdentifier("RootVC") as? UINavigationController
+        let rootVC = storyboard?.instantiateViewControllerWithIdentifier("RootVC") as? UINavigationController
         UIApplication.sharedApplication().keyWindow?.rootViewController = rootVC
         
     }
@@ -75,7 +75,7 @@ class SavedCoordsTVC: UITableViewController {
         cell.backgroundColor = UIColor.clearColor()
         cell.accessoryView = UIImageView(image: UIImage(named: "accessory"))
         
-        var coordsForCell = savedAverages[indexPath.row]
+        let coordsForCell = savedAverages[indexPath.row]
         
         let latToDisplay = coordsForCell["Latitude"]!
         let lonToDisplay = coordsForCell["Longitude"]!
