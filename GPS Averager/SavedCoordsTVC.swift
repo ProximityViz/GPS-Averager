@@ -35,6 +35,14 @@ class SavedCoordsTVC: UITableViewController {
         
     }
 
+    @IBAction func addWasPressed(sender: AnyObject) {
+        
+        var rootVC = storyboard?.instantiateViewControllerWithIdentifier("RootVC") as? UINavigationController
+        UIApplication.sharedApplication().keyWindow?.rootViewController = rootVC
+        
+    }
+    
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

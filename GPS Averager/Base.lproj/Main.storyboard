@@ -360,7 +360,7 @@
                     <navigationItem key="navigationItem" title="Saved Coordinates" id="1c2-zl-unt">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="ic9-iX-MMT">
                             <connections>
-                                <segue destination="b6E-Pk-2AD" kind="presentation" id="hgg-SQ-N1f"/>
+                                <action selector="addWasPressed:" destination="XzI-80-hyX" id="1mR-Kx-CHj"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -637,12 +637,12 @@
                         <barButtonItem key="leftBarButtonItem" image="menu" width="44" id="Y3F-yh-miP">
                             <color key="tintColor" red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <connections>
-                                <segue destination="GzN-HV-psZ" kind="presentation" id="g14-Jp-Dzf"/>
+                                <action selector="menuWasPressed:" destination="omi-UF-5a9" id="Yl8-gz-MwZ"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="qib-IQ-jRS">
                             <connections>
-                                <segue destination="b6E-Pk-2AD" kind="presentation" id="2qa-z4-J2R"/>
+                                <action selector="addWasPressed:" destination="omi-UF-5a9" id="YOU-X1-2qU"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -665,7 +665,7 @@
             <objects>
                 <tableViewController title="Coordinate Formats" id="gbI-GO-LNg" customClass="CoordFormatTVC" customModule="GPS_Averager" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="91x-DY-lzZ">
-                        <rect key="frame" x="0.0" y="64" width="600" height="492"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -708,7 +708,7 @@
         <!--Navigation Controller-->
         <scene sceneID="l83-r6-MuF">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="b6E-Pk-2AD" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="RootVC" automaticallyAdjustsScrollViewInsets="NO" id="b6E-Pk-2AD" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="Xml-bQ-lBa">
@@ -747,7 +747,7 @@
         <!--Navigation Controller-->
         <scene sceneID="fcE-ca-2X1">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="GzN-HV-psZ" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="SavedCoordsNavC" automaticallyAdjustsScrollViewInsets="NO" id="GzN-HV-psZ" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="LVT-fO-etD">
@@ -768,9 +768,7 @@
         <image name="menu" width="44" height="44"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="2qa-z4-J2R"/>
         <segue reference="gqs-XI-2kH"/>
-        <segue reference="zq1-o4-Esj"/>
-        <segue reference="Tw5-65-NNJ"/>
+        <segue reference="6oo-Im-Kjk"/>
     </inferredMetricsTieBreakers>
 </document>

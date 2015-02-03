@@ -60,6 +60,13 @@ class AvgCoordsVC: UIViewController, MKMapViewDelegate {
     
     }
 
+    @IBAction func menuWasPressed(sender: AnyObject) {
+        
+        var navC = storyboard?.instantiateViewControllerWithIdentifier("SavedCoordsNavC") as UINavigationController
+        presentViewController(navC, animated: true, completion: nil)
+        
+    }
+    
     @IBAction func shareWasPressed(sender: UIBarButtonItem) {
         
         var shareText = "Averaged coordinates: Latitude: \(lat), Longitude: \(lon)"
@@ -68,9 +75,11 @@ class AvgCoordsVC: UIViewController, MKMapViewDelegate {
         
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @IBAction func addWasPressed(sender: AnyObject) {
+        
+        var rootVC = storyboard?.instantiateViewControllerWithIdentifier("RootVC") as? UINavigationController
+        UIApplication.sharedApplication().keyWindow?.rootViewController = rootVC
+        
     }
     
     func displayCoords(#latToDisplay: String, lonToDisplay: String) {

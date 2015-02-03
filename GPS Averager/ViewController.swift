@@ -82,7 +82,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         // MARK: Geolocation
         manager = CLLocationManager()
         manager.delegate = self
-        manager.desiredAccuracy = kCLLocationAccuracyBest // FIXME: should this be kCLLocationAccuracyBestForNavigation?
+        manager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
         manager.requestWhenInUseAuthorization()
         manager.startUpdatingLocation()
         
@@ -129,7 +129,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             // mode is auto and has not begun yet
             // start averaging and change button to "Stop"
             isRunning = true
-            startButton.setTitle("Stop", forState: UIControlState.Normal)
+            startButton.setTitle("Pause", forState: UIControlState.Normal)
             
             // change label colors and/or column heading text to indicate "current" point is current
             currentLabel.text = "Current"
@@ -137,11 +137,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         } else if mode == "Auto" && isRunning == true {
             
             // mode is auto and has been running
-            // stop averaging and change button to "Start"
-            // FIXME: decide if hitting the button again should restart or resume, and change text accordingly, and make sure it works properly
-            
+            // stop averaging and change button
             isRunning = false
-            startButton.setTitle("Start", forState: UIControlState.Normal)
+            startButton.setTitle("Resume", forState: UIControlState.Normal)
             
             currentLabel.text = "Most Recent"
 
@@ -184,14 +182,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
     }
     
-    @IBAction func finishWasPressed(sender: UIButton) {
-        
-        // TODO: Remove this if possible (just call finishWasPressed elsewhere)
-        finishCollecting()
-        
-    }
-    
-    func finishCollecting() {
+    @IBAction func finishWasPressed(sender: AnyObject) {
         
         // format date
         var dateFormatter = NSDateFormatter()
@@ -287,14 +278,10 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 // map points
                 var mapLat:CLLocationDegrees = userLocation.coordinate.latitude
                 var mapLon:CLLocationDegrees = userLocation.coordinate.longitude
-                // TODO: change span to reflect where points are
-                var span:MKCoordinateSpan = MKCoordinateSpanMake(0.005, 0.005)
                 var location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(mapLat, mapLon)
-                var region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
                 var annotation = MKPointAnnotation()
                 annotation.coordinate = location
                 
-                mapView.setRegion(region, animated: true)
                 mapView.addAnnotation(annotation)
                 
             }
@@ -305,7 +292,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     func resetLabels() {
     
-        // TODO: should this reset to "current"?
+        // should this reset to "current"?
         //        currentLabel.text = ""
         currentLatLabel.text = ""
         currentLonLabel.text = ""
@@ -314,6 +301,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         avgLonLabel.text = ""
         avgAltLabel.text = ""
         avgPointsLabel.text = ""
+        startButton.setTitle("Start", forState: UIControlState.Normal)
         
     }
     
@@ -329,8 +317,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     func displayAlert(navigatingTo: String) {
-        
-        // TODO: Also display alert when menu button is tapped, if latitudes.count != 0
         
         let alertController = UIAlertController(title: "Your Points Have Not Been Saved", message: "Would you like to save them now?", preferredStyle: .Alert)
         
@@ -352,7 +338,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         let OKAction = UIAlertAction(title: "Yes", style: .Default) { (action) in
             
-            self.finishCollecting()
+            self.finishWasPressed(self)
             self.performSegueWithIdentifier("finishSegue", sender: self)
             
         }

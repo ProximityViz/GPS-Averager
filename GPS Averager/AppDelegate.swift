@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
+        // MARK: aesthetics
         UIBarButtonItem.appearance().tintColor = UIColor (red:1.00, green:0.23, blue:0.19, alpha:1)
         UINavigationBar.appearance().tintColor = UIColor (red:1.00, green:0.23, blue:0.19, alpha:1)
         UINavigationBar.appearance().backgroundColor = UIColor (red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
