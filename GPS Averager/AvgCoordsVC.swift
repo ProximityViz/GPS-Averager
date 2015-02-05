@@ -32,11 +32,20 @@ class AvgCoordsVC: UIViewController, MKMapViewDelegate {
         // aesthetics
         changeFormatButton.setTitleTextAttributes([NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 15.0)!], forState: UIControlState.Normal)
         shareButton.setTitleTextAttributes([NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 15.0)!], forState: UIControlState.Normal)
+    
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
         
         if coordsToDisplay == [:] {
             
             coordsToDisplay = savedAverages.first!
             
+        }
+        
+        if (defaults.objectForKey("coordFormat") != nil) {
+            coordFormat = defaults.objectForKey("coordFormat") as String
         }
         
         let latToDisplay = coordsToDisplay["Latitude"]!
@@ -55,7 +64,8 @@ class AvgCoordsVC: UIViewController, MKMapViewDelegate {
         
         mapView.setRegion(region, animated: true)
         mapView.addAnnotation(annotation)
-    
+        
+        
     }
 
     @IBAction func menuWasPressed(sender: AnyObject) {

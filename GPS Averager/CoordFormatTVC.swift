@@ -57,7 +57,15 @@ class CoordFormatTVC: UITableViewController {
     // MARK: - Navigation
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        coordFormat = coordFormatList[indexPath.row]["Name"]
+        let format = coordFormatList[indexPath.row]["Name"]
+        defaults.setValue(format, forKey: "coordFormat")
+//        
+//        if (defaults.objectForKey("coordFormat") != nil) {
+//            coordFormat = defaults.objectForKey("coordFormat") as String
+//        }
+//        savedAverages.insert(["Latitude" : "\(avgCoords.avgLat)", "Longitude" : "\(avgCoords.avgLon)", "Altitude": "\(avgAlt) m", "Points" : "\(points)", "Date" : "\(formattedDate)"], atIndex: 0)
+//        defaults.setValue(savedAverages, forKey: "savedAverages")
+        
         performSegueWithIdentifier("unwind", sender: self)
         
     }

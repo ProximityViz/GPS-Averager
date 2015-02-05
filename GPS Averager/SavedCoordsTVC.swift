@@ -17,15 +17,22 @@ class SavedCoordsTVC: UITableViewController {
     var sendCoords = [String : String]()
 
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
         
         navigationController?.setToolbarHidden(false, animated: false)
+        
+        if (defaults.objectForKey("coordFormat") != nil) {
+            coordFormat = defaults.objectForKey("coordFormat") as String
+        }
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        savedAverages = defaults.objectForKey("savedAverages") as Array
+        if (defaults.objectForKey("savedAverages") != nil) {
+            savedAverages = defaults.objectForKey("savedAverages") as Array
+        }
         
         tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
         tableView.separatorInset = UIEdgeInsetsZero
@@ -99,6 +106,7 @@ class SavedCoordsTVC: UITableViewController {
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
         
+        // this needs to be in willSelect so it will run before prepareForSegue runs
         sendCoords = savedAverages[indexPath.row]
         
         return indexPath

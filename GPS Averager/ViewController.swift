@@ -14,6 +14,8 @@ var savedAverages = [[String:String]]()
 
 var coordFormat:String!
 
+let defaults = NSUserDefaults.standardUserDefaults()
+
 class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
     
     @IBOutlet weak var autoOrManual: UISegmentedControl!
@@ -50,8 +52,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     let regularColor = UIColor.blackColor()
     let boldColor = UIColor(red:0.99, green:0.13, blue:0.15, alpha:1)
     
-    let defaults = NSUserDefaults.standardUserDefaults()
-    
     override func viewWillAppear(animated: Bool) {
         
         // reset mapView
@@ -70,14 +70,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         mode = "Auto"
         startButton.setTitle("Start", forState: UIControlState.Normal)
         
-        if coordFormat == nil {
+        // MARK: NSUserDefaults
+        if (defaults.objectForKey("savedAverages") != nil) {
+            savedAverages = defaults.objectForKey("savedAverages") as Array
+        }
+        if (defaults.objectForKey("coordFormat") != nil) {
+            coordFormat = defaults.objectForKey("coordFormat") as String
+        } else {
             coordFormat = "Decimal degrees"
         }
-        
-        // MARK: NSUserDefaults
-//        if (defaults.objectForKey("savedAverages") != nil) {
-            savedAverages = defaults.objectForKey("savedAverages") as Array
-//        }
         
         // MARK: Geolocation
         manager = CLLocationManager()
@@ -319,6 +320,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         manualLats = []
         manualLons = []
         manualAlts = []
+        mapView.removeAnnotations(mapView.annotations)
+        isRunning = false
         
     }
     
@@ -348,6 +351,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     func displayAlert(navigatingTo: String) {
+        
+        println("\(latitudes)")
         
         let alertController = UIAlertController(title: "Your Points Have Not Been Saved", message: "Would you like to save them now?", preferredStyle: .Alert)
         
