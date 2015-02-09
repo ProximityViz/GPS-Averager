@@ -104,7 +104,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     @IBAction func changeMode(sender: UISegmentedControl) {
         
         // check for unsaved data
-        if latitudes.count != 0 {
+        if latitudes.count != 0 || manualLats.count != 0 {
             
             isRunning = false
             displayAlert("changeMode")
@@ -256,11 +256,6 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             
             LatLon = Functions.formatCoordinateString(lat: userLocation.coordinate.latitude, lon: userLocation.coordinate.longitude)
             
-            // MARK: Add point to arrays
-            latitudes.append(LatLon.latitude)
-            longitudes.append(LatLon.longitude)
-            altitudes.append(Float(userLocation.altitude))
-            
             // change "current" labels
             currentLatLabel.textColor = regularColor
             currentLonLabel.textColor = regularColor
@@ -271,6 +266,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             
             // MARK: Change labels and map points for Auto mode
             if mode == "Auto" {
+                
+                // MARK: Add point to arrays
+                latitudes.append(LatLon.latitude)
+                longitudes.append(LatLon.longitude)
+                altitudes.append(Float(userLocation.altitude))
                 
                 // change "average" labels
                 let avgCoords = Functions.averageCoordinates(latitudes, longitudes: longitudes)
@@ -392,7 +392,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
 //            displayAlert("savedCoords")
             
             // check for unsaved data
-            if latitudes.count != 0 {
+            if latitudes.count != 0 || manualLats.count != 0 {
 
                 isRunning = false
                 displayAlert("savedCoords")

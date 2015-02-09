@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import MapKit
 
-class SavedCoordsTVC: UITableViewController {
+class SavedCoordsTVC: UITableViewController, MKMapViewDelegate {
     
+    @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var changeFormatButton: UIBarButtonItem!
     
     let defaults = NSUserDefaults.standardUserDefaults()
@@ -32,6 +34,35 @@ class SavedCoordsTVC: UITableViewController {
         
         if (defaults.objectForKey("savedAverages") != nil) {
             savedAverages = defaults.objectForKey("savedAverages") as Array
+        } else {
+            savedAverages = []
+        }
+        
+        // MARK: Mapping
+        mapView.frame.size.width = self.view.frame.width
+        
+        mapView.delegate = self
+        println("\(mapView.frame.width)")
+        
+        for average in savedAverages {
+            
+            let tempLat:String = average["Latitude"]!
+            let mapLat = (tempLat as NSString).doubleValue
+
+            let tempLon:String = average["Longitude"]!
+            let mapLon = (tempLon as NSString).doubleValue
+            
+            let location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(mapLat, mapLon)
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = location
+            
+            let annLatLon = Functions.formatCoordinateString(lat: mapLat, lon: mapLon)
+            annotation.title = "\(annLatLon.latString), \(annLatLon.lonString)"
+            annotation.subtitle = average["Date"]
+            
+            mapView.addAnnotation(annotation)
+            mapView.showAnnotations(mapView.annotations, animated: true)
+            
         }
         
         tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
@@ -39,6 +70,21 @@ class SavedCoordsTVC: UITableViewController {
         
         changeFormatButton.setTitleTextAttributes([NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 15.0)!], forState: UIControlState.Normal)
         UIToolbar.appearance().barTintColor = UIColor.whiteColor()
+        
+    }
+    
+    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+
+        var rightArrowButton = ArrowButton(frame: CGRectMake(0, 0, 22, 22))
+        rightArrowButton.strokeColor = (UIColor (red:1.00, green:0.23, blue:0.19, alpha:1))
+        rightArrowButton.strokeSize = 1.2
+        
+        var pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "pin")
+
+        pinView.rightCalloutAccessoryView = rightArrowButton
+        pinView.canShowCallout = true
+        
+        return pinView
         
     }
 
@@ -96,13 +142,28 @@ class SavedCoordsTVC: UITableViewController {
         return cell
     }
     
-//    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        
-//        sendCoords = savedAverages[indexPath.row]
-//        
-//        println(sendCoords["Points"])
-//        
-//    }
+    func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!) {
+        
+        println(view.annotation.subtitle)
+        
+        var i:Int = 0
+        
+        for average in savedAverages {
+            
+            if average["Date"] == view.annotation.subtitle {
+                
+                sendCoords = savedAverages[i]
+                performSegueWithIdentifier("showSaved", sender: self)
+                return
+                
+            } else {
+                i++
+            }
+            
+        }
+        
+        
+    }
     
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
         

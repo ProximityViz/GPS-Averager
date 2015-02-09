@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		EC01EB8B1A76CADA009CA309 /* CoordFormatTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC01EB8A1A76CADA009CA309 /* CoordFormatTVC.swift */; };
+		EC4339491A8837F1008C0B1B /* ArrowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC4339481A8837F1008C0B1B /* ArrowButton.swift */; };
 		ECD3002B1A753F2400F6CD9D /* AvgCoordsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3002A1A753F2400F6CD9D /* AvgCoordsVC.swift */; };
-		ECD3002D1A7543E000F6CD9D /* SavedCoordsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3002C1A7543E000F6CD9D /* SavedCoordsTVC.swift */; };
 		ECD3002F1A754DE900F6CD9D /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3002E1A754DE900F6CD9D /* Functions.swift */; };
 		ECD3FFD31A740ECA00F6CD9D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3FFD21A740ECA00F6CD9D /* AppDelegate.swift */; };
 		ECD3FFD51A740ECA00F6CD9D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3FFD41A740ECA00F6CD9D /* ViewController.swift */; };
@@ -18,7 +18,7 @@
 		ECD3FFDD1A740ECA00F6CD9D /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = ECD3FFDB1A740ECA00F6CD9D /* LaunchScreen.xib */; };
 		ECD3FFE91A740ECA00F6CD9D /* GPS_AveragerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3FFE81A740ECA00F6CD9D /* GPS_AveragerTests.swift */; };
 		ECD3FFF31A740FFA00F6CD9D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECD3FFF21A740FFA00F6CD9D /* CoreLocation.framework */; };
-		ECD3FFF61A741C3D00F6CD9D /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ECD3FFF51A741C3D00F6CD9D /* MapKit.framework */; };
+		ECE6E1081A8435CC00AF34B5 /* SavedCoordsTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3002C1A7543E000F6CD9D /* SavedCoordsTVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		EC01EB8A1A76CADA009CA309 /* CoordFormatTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoordFormatTVC.swift; sourceTree = "<group>"; };
+		EC4339481A8837F1008C0B1B /* ArrowButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrowButton.swift; sourceTree = "<group>"; };
 		ECD3002A1A753F2400F6CD9D /* AvgCoordsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvgCoordsVC.swift; sourceTree = "<group>"; };
 		ECD3002C1A7543E000F6CD9D /* SavedCoordsTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedCoordsTVC.swift; sourceTree = "<group>"; };
 		ECD3002E1A754DE900F6CD9D /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
@@ -47,7 +48,6 @@
 		ECD3FFE71A740ECA00F6CD9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ECD3FFE81A740ECA00F6CD9D /* GPS_AveragerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GPS_AveragerTests.swift; sourceTree = "<group>"; };
 		ECD3FFF21A740FFA00F6CD9D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		ECD3FFF51A741C3D00F6CD9D /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,7 +55,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ECD3FFF61A741C3D00F6CD9D /* MapKit.framework in Frameworks */,
 				ECD3FFF31A740FFA00F6CD9D /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -70,6 +69,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EC43394A1A8837F6008C0B1B /* IBViews */ = {
+			isa = PBXGroup;
+			children = (
+				EC4339481A8837F1008C0B1B /* ArrowButton.swift */,
+			);
+			name = IBViews;
+			sourceTree = "<group>";
+		};
 		ECD3FFC41A740ECA00F6CD9D = {
 			isa = PBXGroup;
 			children = (
@@ -92,6 +99,7 @@
 		ECD3FFCF1A740ECA00F6CD9D /* GPS Averager */ = {
 			isa = PBXGroup;
 			children = (
+				EC43394A1A8837F6008C0B1B /* IBViews */,
 				ECD3002E1A754DE900F6CD9D /* Functions.swift */,
 				ECD3FFD41A740ECA00F6CD9D /* ViewController.swift */,
 				ECD3002A1A753F2400F6CD9D /* AvgCoordsVC.swift */,
@@ -134,7 +142,6 @@
 		ECD3FFF41A74196F00F6CD9D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				ECD3FFF51A741C3D00F6CD9D /* MapKit.framework */,
 				ECD3FFF21A740FFA00F6CD9D /* CoreLocation.framework */,
 			);
 			name = Frameworks;
@@ -258,7 +265,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				ECD3FFD51A740ECA00F6CD9D /* ViewController.swift in Sources */,
-				ECD3002D1A7543E000F6CD9D /* SavedCoordsTVC.swift in Sources */,
+				ECE6E1081A8435CC00AF34B5 /* SavedCoordsTVC.swift in Sources */,
+				EC4339491A8837F1008C0B1B /* ArrowButton.swift in Sources */,
 				ECD3002B1A753F2400F6CD9D /* AvgCoordsVC.swift in Sources */,
 				ECD3002F1A754DE900F6CD9D /* Functions.swift in Sources */,
 				EC01EB8B1A76CADA009CA309 /* CoordFormatTVC.swift in Sources */,

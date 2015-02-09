@@ -39,9 +39,7 @@ class AvgCoordsVC: UIViewController, MKMapViewDelegate {
         super.viewWillAppear(true)
         
         if coordsToDisplay == [:] {
-            
             coordsToDisplay = savedAverages.first!
-            
         }
         
         if (defaults.objectForKey("coordFormat") != nil) {

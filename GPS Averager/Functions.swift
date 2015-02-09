@@ -71,8 +71,8 @@ class Functions: NSObject {
             if lonMin < 10 {lonZero = "0"} else {lonZero = ""}
             var latSec = ((fabs(latitude % 1) * 60) % 1) * 60
             var lonSec = ((fabs(longitude % 1) * 60) % 1) * 60
-            var latSecRound = round(latSec * 10000.0) / 10000.0
-            var lonSecRound = round(lonSec * 10000.0) / 10000.0
+            var latSecRound = round(latSec * 100.0) / 100.0
+            var lonSecRound = round(lonSec * 100.0) / 100.0
             if latSecRound < 10 {latSecZero = "0"} else {latSecZero = ""}
             if lonSecRound < 10 {lonSecZero = "0"} else {lonSecZero = ""}
             
