@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		EC01EB8B1A76CADA009CA309 /* CoordFormatTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC01EB8A1A76CADA009CA309 /* CoordFormatTVC.swift */; };
+		EC10E85C1A9EA4FD001A573F /* Redo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC10E85B1A9EA4FD001A573F /* Redo.storyboard */; };
+		EC10E85E1A9EB7EF001A573F /* AveragedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC10E85D1A9EB7EF001A573F /* AveragedVC.swift */; };
+		EC10E8601A9EBC3C001A573F /* SavedTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC10E85F1A9EBC3C001A573F /* SavedTVC.swift */; };
 		EC4339491A8837F1008C0B1B /* ArrowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC4339481A8837F1008C0B1B /* ArrowButton.swift */; };
 		ECD3002B1A753F2400F6CD9D /* AvgCoordsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3002A1A753F2400F6CD9D /* AvgCoordsVC.swift */; };
 		ECD3002F1A754DE900F6CD9D /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD3002E1A754DE900F6CD9D /* Functions.swift */; };
@@ -33,6 +36,9 @@
 
 /* Begin PBXFileReference section */
 		EC01EB8A1A76CADA009CA309 /* CoordFormatTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoordFormatTVC.swift; sourceTree = "<group>"; };
+		EC10E85B1A9EA4FD001A573F /* Redo.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Redo.storyboard; sourceTree = "<group>"; };
+		EC10E85D1A9EB7EF001A573F /* AveragedVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AveragedVC.swift; sourceTree = "<group>"; };
+		EC10E85F1A9EBC3C001A573F /* SavedTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedTVC.swift; sourceTree = "<group>"; };
 		EC4339481A8837F1008C0B1B /* ArrowButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrowButton.swift; sourceTree = "<group>"; };
 		ECD3002A1A753F2400F6CD9D /* AvgCoordsVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AvgCoordsVC.swift; sourceTree = "<group>"; };
 		ECD3002C1A7543E000F6CD9D /* SavedCoordsTVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SavedCoordsTVC.swift; sourceTree = "<group>"; };
@@ -69,6 +75,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EC10E8611A9EC7AD001A573F /* Old */ = {
+			isa = PBXGroup;
+			children = (
+				ECD3FFD41A740ECA00F6CD9D /* ViewController.swift */,
+				ECD3002A1A753F2400F6CD9D /* AvgCoordsVC.swift */,
+				ECD3002C1A7543E000F6CD9D /* SavedCoordsTVC.swift */,
+				EC01EB8A1A76CADA009CA309 /* CoordFormatTVC.swift */,
+			);
+			name = Old;
+			sourceTree = "<group>";
+		};
 		EC43394A1A8837F6008C0B1B /* IBViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -101,11 +118,11 @@
 			children = (
 				EC43394A1A8837F6008C0B1B /* IBViews */,
 				ECD3002E1A754DE900F6CD9D /* Functions.swift */,
-				ECD3FFD41A740ECA00F6CD9D /* ViewController.swift */,
-				ECD3002A1A753F2400F6CD9D /* AvgCoordsVC.swift */,
-				ECD3002C1A7543E000F6CD9D /* SavedCoordsTVC.swift */,
-				EC01EB8A1A76CADA009CA309 /* CoordFormatTVC.swift */,
+				EC10E8611A9EC7AD001A573F /* Old */,
+				EC10E85F1A9EBC3C001A573F /* SavedTVC.swift */,
+				EC10E85D1A9EB7EF001A573F /* AveragedVC.swift */,
 				ECD3FFD61A740ECA00F6CD9D /* Main.storyboard */,
+				EC10E85B1A9EA4FD001A573F /* Redo.storyboard */,
 				ECD3FFD01A740ECA00F6CD9D /* Supporting Files */,
 			);
 			path = "GPS Averager";
@@ -228,6 +245,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC10E85C1A9EA4FD001A573F /* Redo.storyboard in Resources */,
 				ECD3FFD81A740ECA00F6CD9D /* Main.storyboard in Resources */,
 				ECD3FFDD1A740ECA00F6CD9D /* LaunchScreen.xib in Resources */,
 				ECD3FFDA1A740ECA00F6CD9D /* Images.xcassets in Resources */,
@@ -267,6 +285,8 @@
 				ECD3FFD51A740ECA00F6CD9D /* ViewController.swift in Sources */,
 				ECE6E1081A8435CC00AF34B5 /* SavedCoordsTVC.swift in Sources */,
 				EC4339491A8837F1008C0B1B /* ArrowButton.swift in Sources */,
+				EC10E8601A9EBC3C001A573F /* SavedTVC.swift in Sources */,
+				EC10E85E1A9EB7EF001A573F /* AveragedVC.swift in Sources */,
 				ECD3002B1A753F2400F6CD9D /* AvgCoordsVC.swift in Sources */,
 				ECD3002F1A754DE900F6CD9D /* Functions.swift in Sources */,
 				EC01EB8B1A76CADA009CA309 /* CoordFormatTVC.swift in Sources */,

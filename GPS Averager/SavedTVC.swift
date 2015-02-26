@@ -1,5 +1,5 @@
 //
-//  SavedCoordsTVC.swift
+//  SavedTVC.swift
 //  GPS Averager
 //
 //  Created by Mollie on 1/25/15.
@@ -9,19 +9,16 @@
 import UIKit
 import MapKit
 
-class SavedCoordsTVC: UITableViewController, MKMapViewDelegate {
+class SavedTVC: UITableViewController, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
-    @IBOutlet weak var changeFormatButton: UIBarButtonItem!
     
     let defaults = NSUserDefaults.standardUserDefaults()
     
     var sendCoords = [String : String]()
-
+    
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        
-        navigationController?.setToolbarHidden(false, animated: false)
         
         if (defaults.objectForKey("coordFormat") != nil) {
             coordFormat = defaults.objectForKey("coordFormat") as String
@@ -39,7 +36,7 @@ class SavedCoordsTVC: UITableViewController, MKMapViewDelegate {
         } else {
             coordFormat = "Decimal degrees"
         }
-    
+        
         if (defaults.objectForKey("savedAverages") != nil) {
             savedAverages = defaults.objectForKey("savedAverages") as Array
         } else {
@@ -55,7 +52,7 @@ class SavedCoordsTVC: UITableViewController, MKMapViewDelegate {
             
             let tempLat:String = average["Latitude"]!
             let mapLat = (tempLat as NSString).doubleValue
-
+            
             let tempLon:String = average["Longitude"]!
             let mapLon = (tempLon as NSString).doubleValue
             
@@ -75,30 +72,22 @@ class SavedCoordsTVC: UITableViewController, MKMapViewDelegate {
         tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
         tableView.separatorInset = UIEdgeInsetsZero
         
-        changeFormatButton.setTitleTextAttributes([NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 15.0)!], forState: UIControlState.Normal)
         UIToolbar.appearance().barTintColor = UIColor.whiteColor()
         
     }
     
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
-
+        
         var rightArrowButton = ArrowButton(frame: CGRectMake(0, 0, 22, 22))
         rightArrowButton.strokeColor = (UIColor (red:1.00, green:0.23, blue:0.19, alpha:1))
         rightArrowButton.strokeSize = 1.2
         
         var pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "pin")
-
+        
         pinView.rightCalloutAccessoryView = rightArrowButton
         pinView.canShowCallout = true
         
         return pinView
-        
-    }
-
-    @IBAction func addWasPressed(sender: AnyObject) {
-        
-        let rootVC = storyboard?.instantiateViewControllerWithIdentifier("RootVC") as? UINavigationController
-        UIApplication.sharedApplication().keyWindow?.rootViewController = rootVC
         
     }
     
@@ -107,12 +96,12 @@ class SavedCoordsTVC: UITableViewController, MKMapViewDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // TODO: Make sections by month or day
         return 1
     }
-
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return savedAverages.count
     }
@@ -127,7 +116,7 @@ class SavedCoordsTVC: UITableViewController, MKMapViewDelegate {
         cell.layoutMargins = UIEdgeInsetsZero
         cell.preservesSuperviewLayoutMargins = false
     }
-
+    
     // MARK: Cells
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
@@ -145,13 +134,11 @@ class SavedCoordsTVC: UITableViewController, MKMapViewDelegate {
         
         cell.textLabel?.text = "\(LatLon.latString), \(LatLon.lonString)"
         cell.detailTextLabel?.text = coordsForCell["Date"]
-
+        
         return cell
     }
     
     func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!) {
-        
-        println(view.annotation.subtitle)
         
         var i:Int = 0
         
@@ -172,15 +159,6 @@ class SavedCoordsTVC: UITableViewController, MKMapViewDelegate {
         
     }
     
-    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        
-        // this needs to be in willSelect so it will run before prepareForSegue runs
-        sendCoords = savedAverages[indexPath.row]
-        
-        return indexPath
-        
-    }
-
     // Override to support editing the table view.
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
@@ -189,18 +167,28 @@ class SavedCoordsTVC: UITableViewController, MKMapViewDelegate {
             defaults.setValue(savedAverages, forKey: "savedAverages")
         } else if editingStyle == .Insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
+        }
     }
-
+    
     // MARK: - Navigation
-
+    
+    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        
+        // this needs to be in willSelect so it will run before prepareForSegue runs
+        sendCoords = savedAverages[indexPath.row]
+        
+        return indexPath
+        
+    }
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if (segue.identifier == "showSaved") {
             
-            let navController: UINavigationController = segue.destinationViewController as UINavigationController
-            let newVC = navController.topViewController as AvgCoordsVC
+//            let navController: UINavigationController = segue.destinationViewController as UINavigationController
+//            let newVC = navController.topViewController as AveragedVC
+            let newVC = segue.destinationViewController as AveragedVC
             newVC.coordsToDisplay = sendCoords
             
         }
@@ -208,7 +196,7 @@ class SavedCoordsTVC: UITableViewController, MKMapViewDelegate {
     }
     
     @IBAction func unwindSegue(segue: UIStoryboardSegue) {
-
+        
         tableView.reloadData()
         
     }
@@ -218,5 +206,5 @@ class SavedCoordsTVC: UITableViewController, MKMapViewDelegate {
         navigationController?.setToolbarHidden(true, animated: true)
         
     }
-
+    
 }
