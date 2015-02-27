@@ -1,17 +1,18 @@
 //
-//  SavedTVC.swift
+//  SavedVC.swift
 //  GPS Averager
 //
-//  Created by Mollie on 1/25/15.
+//  Created by Mollie on 2/27/15.
 //  Copyright (c) 2015 Proximity Viz LLC. All rights reserved.
 //
 
 import UIKit
 import MapKit
 
-class SavedTVC: UITableViewController, MKMapViewDelegate {
+class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var mapView: MKMapView!
+    @IBOutlet weak var tableView: UITableView!
     
     let defaults = NSUserDefaults.standardUserDefaults()
     
@@ -32,6 +33,8 @@ class SavedTVC: UITableViewController, MKMapViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView.delegate = self
         
         if (defaults.objectForKey("coordFormat") != nil) {
             coordFormat = defaults.objectForKey("coordFormat") as String
@@ -67,14 +70,17 @@ class SavedTVC: UITableViewController, MKMapViewDelegate {
             annotation.subtitle = average["Date"] as String
             
             mapView.addAnnotation(annotation)
-            mapView.showAnnotations(mapView.annotations, animated: true)
             
         }
+        
+        mapView.showAnnotations(mapView.annotations, animated: true)
         
         tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
         tableView.separatorInset = UIEdgeInsetsZero
         
         UIToolbar.appearance().barTintColor = UIColor.whiteColor()
+        
+        tableView.reloadData()
         
     }
     
@@ -99,28 +105,28 @@ class SavedTVC: UITableViewController, MKMapViewDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // TODO: Make sections by month or day
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return savedAverages.count
     }
     
     // MARK: Cell separators
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 60.0
     }
     
-    override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         cell.separatorInset = UIEdgeInsetsZero
         cell.layoutMargins = UIEdgeInsetsZero
         cell.preservesSuperviewLayoutMargins = false
     }
     
     // MARK: Cells
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
         
         cell.backgroundColor = UIColor.clearColor()
@@ -135,7 +141,7 @@ class SavedTVC: UITableViewController, MKMapViewDelegate {
         
         
         cell.textLabel?.text = "\(LatLon.latString), \(LatLon.lonString)"
-        cell.detailTextLabel?.text = coordsForCell["Date"] as String
+        cell.detailTextLabel?.text = coordsForCell["Date"] as? String
         
         return cell
     }
@@ -146,7 +152,7 @@ class SavedTVC: UITableViewController, MKMapViewDelegate {
         
         for average in savedAverages {
             
-            if average["Date"] as String == view.annotation.subtitle {
+            if average["Date"] as? String == view.annotation.subtitle {
                 
                 sendCoords = savedAverages[i]
                 performSegueWithIdentifier("showSaved", sender: self)
@@ -158,11 +164,10 @@ class SavedTVC: UITableViewController, MKMapViewDelegate {
             
         }
         
-        
     }
     
     // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             savedAverages.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
@@ -174,7 +179,7 @@ class SavedTVC: UITableViewController, MKMapViewDelegate {
     
     // MARK: - Navigation
     
-    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
         
         // this needs to be in willSelect so it will run before prepareForSegue runs
         sendCoords = savedAverages[indexPath.row]

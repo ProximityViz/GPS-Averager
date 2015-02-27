@@ -147,6 +147,40 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         
     }
     
+    // MARK: Keyboard sliding
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
+        
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            if let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+                if let tabBarHeight = tabBarController?.tabBar.frame.height {
+                    view.frame.origin.y = -(keyboardSize.height - tabBarHeight)
+                    
+                } else {
+                    view.frame.origin.y = -keyboardSize.height
+                }
+            }
+        }
+    }
+    
+    
+    func keyboardWillHide(notification: NSNotification) {
+        view.frame.origin.y = 0
+    }
+    
+    // minimize keyboard on tap outside
+    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        view.endEditing(true)
+    }
+    
+    // MARK: Buttons
     @IBAction func startWasPressed(sender: UIButton) {
         
         // TODO: change color of "Finish" button to red here & grey by default
@@ -385,8 +419,6 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
     func displayAlert(navigatingTo: String) {
         //    func displayAlert() {
         
-        println("\(latitudes)")
-        
         let alertController = UIAlertController(title: "Your Points Have Not Been Saved", message: "Would you like to save them now?", preferredStyle: .Alert)
         
         let cancelAction = UIAlertAction(title: "No", style: .Cancel) { (action) in
@@ -400,8 +432,6 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
             //            } else if navigatingTo == "savedCoords" {
             //                self.performSegueWithIdentifier("savedCoordsSegue", sender: self)
             //            }
-            
-            self.tabBarController.
             
         }
         

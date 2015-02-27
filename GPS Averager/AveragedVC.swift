@@ -20,11 +20,14 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var avgAltLabel: UILabel!
     @IBOutlet weak var avgPointsLabel: UILabel!
     @IBOutlet weak var commentTextField: UITextField!
+    @IBOutlet weak var saveButton: UIButton!
     
     var lat:String!
     var lon:String!
     
     var coordsToDisplay = [String : AnyObject]()
+    
+    var originalCenter:CGPoint!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,6 +68,42 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
         
     }
     
+    // MARK: Keyboard sliding
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
+        
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if let userInfo = notification.userInfo {
+            if let keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue() {
+                if let tabBarHeight = tabBarController?.tabBar.frame.height {
+                    view.frame.origin.y = -(keyboardSize.height - tabBarHeight)
+                    
+                } else {
+                    view.frame.origin.y = -keyboardSize.height
+                }
+            }
+        }
+        
+        saveButton.hidden = false
+        
+    }
+    
+    
+    func keyboardWillHide(notification: NSNotification) {
+        view.frame.origin.y = 0
+    }
+    
+    // minimize keyboard on tap outside
+    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        view.endEditing(true)
+    }
+    
     @IBAction func shareWasPressed(sender: UIBarButtonItem) {
         
         let shareText = "Averaged coordinates: Latitude: \(lat), Longitude: \(lon)"
@@ -101,6 +140,18 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
 //        
 //    }
 
+    
+    @IBAction func saveComment(sender: AnyObject) {
+        
+        if commentTextField.text != "" {
+            // save comment
+            println(coordsToDisplay)
+        }
+        
+        // animate button and dismiss keyboard (if these aren't automatic)
+        
+    }
+    
     @IBAction func goBack(sender: AnyObject) {
         
         dismissViewControllerAnimated(true, completion: nil)
