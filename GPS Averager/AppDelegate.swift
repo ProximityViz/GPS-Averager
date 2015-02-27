@@ -23,6 +23,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().backgroundColor = UIColor (red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 20.0)!]
         UISegmentedControl.appearance().setTitleTextAttributes([NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 15.0)!], forState: UIControlState.Normal)
+        UITabBar.appearance().selectedImageTintColor = UIColor(red:1.00, green:0.23, blue:0.19, alpha:1)
+        UITextField.appearance().layer.borderColor = UIColor.blackColor().CGColor
         
         return true
     }

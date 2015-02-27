@@ -19,11 +19,12 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var avgLonLabel: UILabel!
     @IBOutlet weak var avgAltLabel: UILabel!
     @IBOutlet weak var avgPointsLabel: UILabel!
+    @IBOutlet weak var commentTextField: UITextField!
     
     var lat:String!
     var lon:String!
     
-    var coordsToDisplay = [String : String]()
+    var coordsToDisplay = [String : AnyObject]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +37,7 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         
-        if coordsToDisplay == [:] {
+        if coordsToDisplay.isEmpty {
             coordsToDisplay = savedAverages.first!
         }
         
@@ -44,8 +45,8 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
             coordFormat = defaults.objectForKey("coordFormat") as String
         }
         
-        let latToDisplay = coordsToDisplay["Latitude"]!
-        let lonToDisplay = coordsToDisplay["Longitude"]!
+        let latToDisplay = coordsToDisplay["Latitude"] as String
+        let lonToDisplay = coordsToDisplay["Longitude"] as String
         
         displayCoords(latToDisplay: latToDisplay, lonToDisplay: lonToDisplay)
         
@@ -81,8 +82,11 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
         
         avgLatLabel.text = lat
         avgLonLabel.text = lon
-        avgAltLabel.text = coordsToDisplay["Altitude"]
-        avgPointsLabel.text = coordsToDisplay["Points"]
+        avgAltLabel.text = coordsToDisplay["Altitude"] as? String
+        avgPointsLabel.text = coordsToDisplay["Points"] as? String
+        if let comment = coordsToDisplay["Comment"] as? String {
+            commentTextField.text = coordsToDisplay["Comment"] as? String
+        }
         
     }
     

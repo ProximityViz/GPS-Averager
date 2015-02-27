@@ -15,7 +15,7 @@ class SavedTVC: UITableViewController, MKMapViewDelegate {
     
     let defaults = NSUserDefaults.standardUserDefaults()
     
-    var sendCoords = [String : String]()
+    var sendCoords = [String : AnyObject]()
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
@@ -25,6 +25,8 @@ class SavedTVC: UITableViewController, MKMapViewDelegate {
         } else {
             coordFormat = "Decimal degrees"
         }
+        
+        tableView.reloadData()
         
     }
     
@@ -50,10 +52,10 @@ class SavedTVC: UITableViewController, MKMapViewDelegate {
         
         for average in savedAverages {
             
-            let tempLat:String = average["Latitude"]!
+            let tempLat:String = average["Latitude"] as String
             let mapLat = (tempLat as NSString).doubleValue
             
-            let tempLon:String = average["Longitude"]!
+            let tempLon:String = average["Longitude"] as String
             let mapLon = (tempLon as NSString).doubleValue
             
             let location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(mapLat, mapLon)
@@ -62,7 +64,7 @@ class SavedTVC: UITableViewController, MKMapViewDelegate {
             
             let annLatLon = Functions.formatCoordinateString(lat: mapLat, lon: mapLon)
             annotation.title = "\(annLatLon.latString), \(annLatLon.lonString)"
-            annotation.subtitle = average["Date"]
+            annotation.subtitle = average["Date"] as String
             
             mapView.addAnnotation(annotation)
             mapView.showAnnotations(mapView.annotations, animated: true)
@@ -126,14 +128,14 @@ class SavedTVC: UITableViewController, MKMapViewDelegate {
         
         let coordsForCell = savedAverages[indexPath.row]
         
-        let latToDisplay = coordsForCell["Latitude"]!
-        let lonToDisplay = coordsForCell["Longitude"]!
+        let latToDisplay = coordsForCell["Latitude"] as String
+        let lonToDisplay = coordsForCell["Longitude"] as String
         
         let LatLon = Functions.formatCoordinateString(lat: (latToDisplay as NSString).doubleValue, lon: (lonToDisplay as NSString).doubleValue)
         
         
         cell.textLabel?.text = "\(LatLon.latString), \(LatLon.lonString)"
-        cell.detailTextLabel?.text = coordsForCell["Date"]
+        cell.detailTextLabel?.text = coordsForCell["Date"] as String
         
         return cell
     }
@@ -144,7 +146,7 @@ class SavedTVC: UITableViewController, MKMapViewDelegate {
         
         for average in savedAverages {
             
-            if average["Date"] == view.annotation.subtitle {
+            if average["Date"] as String == view.annotation.subtitle {
                 
                 sendCoords = savedAverages[i]
                 performSegueWithIdentifier("showSaved", sender: self)
@@ -186,8 +188,6 @@ class SavedTVC: UITableViewController, MKMapViewDelegate {
         
         if (segue.identifier == "showSaved") {
             
-//            let navController: UINavigationController = segue.destinationViewController as UINavigationController
-//            let newVC = navController.topViewController as AveragedVC
             let newVC = segue.destinationViewController as AveragedVC
             newVC.coordsToDisplay = sendCoords
             

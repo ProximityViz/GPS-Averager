@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  NewVC.swift
 //  GPS Averager
 //
 //  Created by Mollie on 1/24/15.
@@ -10,15 +10,20 @@ import UIKit
 import MapKit
 import CoreLocation
 
-//var savedAverages = [[String:String]]()
-//
-//var coordFormat:String!
-//
-//let defaults = NSUserDefaults.standardUserDefaults()
+var savedAverages = [[String:AnyObject]]()
 
-class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
-    
-    @IBOutlet weak var autoOrManual: UISegmentedControl!
+var coordFormat:String!
+var trackingMode:String!
+var baseMap:String!
+
+// NSUserDefaults:
+
+// "savedAverages": [String:String]
+// "coordFormat": String
+// "trackingMode": String
+let defaults = NSUserDefaults.standardUserDefaults()
+
+class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITabBarControllerDelegate {
     
     @IBOutlet weak var currentLabel: UILabel!
     @IBOutlet weak var currentLatLabel: UILabel!
@@ -31,12 +36,12 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     
     @IBOutlet weak var mapView: MKMapView!
     
+    @IBOutlet weak var commentTextField: UITextField!
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var finishButton: UIButton!
     
     var manager:CLLocationManager!
     var isRunning:Bool!
-    var mode:String!
     
     var LatLon: (latitude: Double, longitude: Double, latString: String, lonString:String)!
     var userLocation:CLLocation!
@@ -60,25 +65,60 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         // reset labels
         resetLabels()
         
+        // MARK: NSUserDefaults
+        // TODO: Refactor this
+        if defaults.objectForKey("savedAverages") != nil {
+            savedAverages = defaults.objectForKey("savedAverages") as Array
+        }
+        if defaults.objectForKey("baseMap") != nil {
+            baseMap = defaults.objectForKey("baseMap") as String
+        } else {
+            defaults.setValue("Standard", forKey: "baseMap")
+            baseMap = "Standard"
+        }
+        if defaults.objectForKey("trackingMode") != nil {
+            trackingMode = defaults.objectForKey("trackingMode") as String
+        } else {
+            defaults.setValue("Auto", forKey: "trackingMode")
+            trackingMode = "Auto"
+        }
+        if defaults.objectForKey("coordFormat") != nil {
+            coordFormat = defaults.objectForKey("coordFormat") as String
+        } else {
+            defaults.setValue("Decimal degrees", forKey: "coordFormat")
+            coordFormat = "Decimal degrees"
+        }
+        if defaults.objectForKey("baseMap") != nil {
+            baseMap = defaults.objectForKey("baseMap") as String
+        } else {
+            defaults.setValue("Streets", forKey: "baseMap")
+            baseMap = "Streets"
+        }
+        
+        // TODO: refactor?
+        switch baseMap {
+        case "Hybrid":
+            mapView.mapType = MKMapType.Hybrid
+        case "Satellite":
+            mapView.mapType = MKMapType.Satellite
+        default:
+            mapView.mapType = MKMapType.Standard
+        }
+        
+        // TODO: Refactor this: if trackingMode == Auto then a bunch of things
+        var title = (trackingMode == "Auto") ? "Start" : "Add Point"
+        currentLabel.text = (trackingMode == "Auto") ? "Most Recent" : "Current"
+        isRunning = (trackingMode == "Auto") ? false : true
+        startButton.setTitle(title, forState: UIControlState.Normal)
+        
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         // TODO: These defaults will change once the user has the option of defaulting to manual mode
         isRunning = false
-        mode = "Auto"
         startButton.setTitle("Start", forState: UIControlState.Normal)
-        
-        // MARK: NSUserDefaults
-        if (defaults.objectForKey("savedAverages") != nil) {
-            savedAverages = defaults.objectForKey("savedAverages") as Array
-        }
-        if (defaults.objectForKey("coordFormat") != nil) {
-            coordFormat = defaults.objectForKey("coordFormat") as String
-        } else {
-            coordFormat = "Decimal degrees"
-        }
         
         // MARK: Geolocation
         manager = CLLocationManager()
@@ -87,43 +127,34 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         manager.requestWhenInUseAuthorization()
         manager.startUpdatingLocation()
         
+        tabBarController?.delegate = self
+        
         // reset mapView
         mapView.removeAnnotations(mapView.annotations)
         
         // MARK: Aesthetics
+        commentTextField.layer.cornerRadius = 4
+        commentTextField.layer.borderWidth = 1
+        commentTextField.layer.borderColor = UIColor.grayColor().CGColor
+        
         startButton.layer.cornerRadius = 4
         startButton.layer.borderWidth = 1
         startButton.layer.borderColor = (UIColor (red:1.00, green:0.23, blue:0.19, alpha:1)).CGColor
         
         finishButton.layer.cornerRadius = 4
         finishButton.layer.borderWidth = 1
-        finishButton.layer.borderColor = (UIColor (red:1.00, green:0.23, blue:0.19, alpha:1)).CGColor
-        
-    }
-    
-    @IBAction func changeMode(sender: UISegmentedControl) {
-        
-        // check for unsaved data
-        if latitudes.count != 0 || manualLats.count != 0 {
-            
-            isRunning = false
-            displayAlert("changeMode")
-            
-        } else {
-            
-            var title = (autoOrManual.selectedSegmentIndex == 0) ? "Start" : "Add Point"
-            mode = (autoOrManual.selectedSegmentIndex == 0) ? "Auto" : "Manual"
-            currentLabel.text = (autoOrManual.selectedSegmentIndex == 0) ? "Most Recent" : "Current"
-            isRunning = (autoOrManual.selectedSegmentIndex == 0) ? false : true
-            startButton.setTitle(title, forState: UIControlState.Normal)
-            
-        }
+        finishButton.layer.borderColor = UIColor.grayColor().CGColor
         
     }
     
     @IBAction func startWasPressed(sender: UIButton) {
         
-        if mode == "Auto" && isRunning == false {
+        // TODO: change color of "Finish" button to red here & grey by default
+        
+        finishButton.layer.borderColor = (UIColor (red:1.00, green:0.23, blue:0.19, alpha:1)).CGColor
+        finishButton.setTitleColor(UIColor (red:1.00, green:0.23, blue:0.19, alpha:1), forState: UIControlState.Normal)
+        
+        if trackingMode == "Auto" && isRunning == false {
             
             // mode is auto and has not begun yet
             // start averaging and change button to "Stop"
@@ -133,7 +164,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             // change label colors and/or column heading text to indicate "current" point is current
             currentLabel.text = "Current"
             
-        } else if mode == "Auto" && isRunning == true {
+        } else if trackingMode == "Auto" && isRunning == true {
             
             // mode is auto and has been running
             // stop averaging and change button
@@ -141,9 +172,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             startButton.setTitle("Resume", forState: UIControlState.Normal)
             
             currentLabel.text = "Most Recent"
-
             
-        } else if mode == "Manual" {
+            
+        } else if trackingMode == "Manual" {
             
             // MARK: Change labels and map points for Manual mode
             manualLats.append(LatLon.latitude)
@@ -181,6 +212,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
         if latitudes.count == 0 && manualLats.count == 0 {
             
+            // transition and don't save anything
             displayFinishAlert()
             
         }
@@ -195,7 +227,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         var avgAlt:Float = 0.0
         var points:Int = 0
         
-        if mode == "Auto" {
+        if trackingMode == "Auto" {
             
             isRunning = false
             
@@ -216,13 +248,18 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         // only save if there are points
         if latitudes.count != 0 || manualLats.count != 0 {
             
-            savedAverages.insert(["Latitude" : "\(avgCoords.avgLat)", "Longitude" : "\(avgCoords.avgLon)", "Altitude": "\(avgAlt) m", "Points" : "\(points)", "Date" : "\(formattedDate)"], atIndex: 0)
+            savedAverages.insert([
+                "Latitude" : "\(avgCoords.avgLat)",
+                "Longitude" : "\(avgCoords.avgLon)",
+                "Altitude": "\(avgAlt) m",
+                "Points" : "\(points)",
+                "All Points": [latitudes, longitudes, altitudes],
+                "Comment": commentTextField.text,
+                "Date" : "\(formattedDate)"
+                ], atIndex: 0)
             defaults.setValue(savedAverages, forKey: "savedAverages")
             
         }
-        
-        println(latitudes)
-        println(manualLats)
         
         // reset
         resetPoints()
@@ -267,7 +304,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             currentAltLabel.text = "\(userLocation.altitude) m"
             
             // MARK: Change labels and map points for Auto mode
-            if mode == "Auto" {
+            if trackingMode == "Auto" {
                 
                 // MARK: Add point to arrays
                 latitudes.append(LatLon.latitude)
@@ -281,7 +318,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
                 
                 avgLatLabel.text = latLonString.latString
                 avgLonLabel.text = latLonString.lonString
-                avgAltLabel.text = "\(avgAlt)"            
+                avgAltLabel.text = "\(avgAlt)"
                 avgPointsLabel.text = "\(latitudes.count)"
                 
                 // map points
@@ -300,8 +337,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
     }
     
     func resetLabels() {
-    
-        // should this reset to "current"?
+        
+        // FIXME: should this reset to "current"?
         //        currentLabel.text = ""
         currentLatLabel.text = ""
         currentLonLabel.text = ""
@@ -310,6 +347,8 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         avgLonLabel.text = ""
         avgAltLabel.text = ""
         avgPointsLabel.text = ""
+        commentTextField.text = ""
+        // FIXME: maybe this shouldn't always be start?
         startButton.setTitle("Start", forState: UIControlState.Normal)
         
     }
@@ -327,32 +366,24 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
     }
     
-    func displayFinishAlert() {
+    func tabBarController(tabBarController: UITabBarController, shouldSelectViewController viewController: UIViewController) -> Bool {
         
-        let alertController = UIAlertController(title: "No Points Have Been Collected", message: "Would you like to continue?", preferredStyle: .Alert)
-        
-        let cancelAction = UIAlertAction(title: "No", style: .Cancel) { (action) -> Void in
+        if latitudes.count != 0 || manualLats.count != 0 {
             
+            isRunning = false
+            displayAlert("") // can the alert return us to this function to return true if they hit "No"
+            return false
             
-            
+        } else {
+            return true
         }
         
-        alertController.addAction(cancelAction)
-        
-        let OKAction = UIAlertAction(title: "Yes", style: .Default) { (action) -> Void in
-            
-            let navC = self.storyboard?.instantiateViewControllerWithIdentifier("SavedCoordsNavC") as UINavigationController
-            self.presentViewController(navC, animated: true, completion: nil)
-            
-        }
-        
-        alertController.addAction(OKAction)
-        
-        self.presentViewController(alertController, animated: true, completion: nil)
         
     }
     
+    // TODO: remove navigatingTo?
     func displayAlert(navigatingTo: String) {
+        //    func displayAlert() {
         
         println("\(latitudes)")
         
@@ -363,12 +394,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
             self.resetPoints()
             self.resetLabels()
             
-            // segue to whatever was tapped on:
-            if navigatingTo == "changeMode" {
-                self.changeMode(self.autoOrManual)
-            } else if navigatingTo == "savedCoords" {
-                self.performSegueWithIdentifier("savedCoordsSegue", sender: self)
-            }
+            //            // segue to whatever was tapped on:
+            //            if navigatingTo == "changeMode" {
+            //                self.changeMode(self.autoOrManual)
+            //            } else if navigatingTo == "savedCoords" {
+            //                self.performSegueWithIdentifier("savedCoordsSegue", sender: self)
+            //            }
+            
+            self.tabBarController.
             
         }
         
@@ -387,35 +420,22 @@ class ViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDele
         
     }
     
-    override func shouldPerformSegueWithIdentifier(identifier: String?, sender: AnyObject?) -> Bool {
+    func displayFinishAlert() {
         
-        if identifier! == "savedCoordsSegue" {
-            
-//            displayAlert("savedCoords")
-            
-            // check for unsaved data
-            if latitudes.count != 0 || manualLats.count != 0 {
-
-                isRunning = false
-                displayAlert("savedCoords")
-                return false
-
-            } else {
-                return true
-            }
-            
-            
-        }
-        
-        return true
+        // FIXME: What does "continue" mean?
+        let alertController = UIAlertController(title: "No points have been collected.", message: nil, preferredStyle: .Alert)
+        let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        alertController.addAction(OKAction)
+        self.presentViewController(alertController, animated: true, completion: nil)
         
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
+    
+    
 }
+
 
