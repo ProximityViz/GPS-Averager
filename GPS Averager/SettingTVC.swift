@@ -88,9 +88,11 @@ class SettingTVC: UITableViewController {
         cell.textLabel?.text = currentOptions[indexPath.row]
         
         if currentOptions[indexPath.row] == currentSelection {
-            cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+//            cell.accessoryType = UITableViewCellAccessoryType.Checkmark
+            cell.accessoryView = UIImageView(image: UIImage(named: "Checkmark"))
         } else {
-            cell.accessoryType = UITableViewCellAccessoryType.None
+//            cell.accessoryView = UIImageView(image: UIImage(named: "Checkmark"))
+            cell.accessoryView = nil
         }
         
         if currentSetting["setting"] as String == "Coordinate Format" {

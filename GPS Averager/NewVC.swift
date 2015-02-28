@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-var savedAverages = [[String:AnyObject]]()
+var savedAverages: [[String:AnyObject]] = [[:]]
 
 var coordFormat:String!
 var trackingMode:String!
@@ -29,9 +29,11 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
     @IBOutlet weak var currentLatLabel: UILabel!
     @IBOutlet weak var currentLonLabel: UILabel!
     @IBOutlet weak var currentAltLabel: UILabel!
+    @IBOutlet weak var currentAccuracyLabel: UILabel!
     @IBOutlet weak var avgLatLabel: UILabel!
     @IBOutlet weak var avgLonLabel: UILabel!
     @IBOutlet weak var avgAltLabel: UILabel!
+    @IBOutlet weak var avgAccuracyLabel: UILabel!
     @IBOutlet weak var avgPointsLabel: UILabel!
     
     @IBOutlet weak var mapView: MKMapView!
@@ -49,10 +51,12 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
     var latitudes = [Double]()
     var longitudes = [Double]()
     var altitudes = [Float]()
+    var accuracies = [Float]()
     
     var manualLats = [Double]()
     var manualLons = [Double]()
     var manualAlts = [Float]()
+    var manualAccuracies = [Float]()
     
     let regularColor = UIColor.blackColor()
     let boldColor = UIColor(red:0.99, green:0.13, blue:0.15, alpha:1)
@@ -91,24 +95,26 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         if defaults.objectForKey("baseMap") != nil {
             baseMap = defaults.objectForKey("baseMap") as String
         } else {
-            defaults.setValue("Streets", forKey: "baseMap")
-            baseMap = "Streets"
+            defaults.setValue("Standard", forKey: "baseMap")
+            baseMap = "Standard"
         }
         
-        // TODO: refactor?
-        switch baseMap {
-        case "Hybrid":
-            mapView.mapType = MKMapType.Hybrid
-        case "Satellite":
-            mapView.mapType = MKMapType.Satellite
-        default:
-            mapView.mapType = MKMapType.Standard
-        }
+        baseMap = defaults.objectForKey("baseMap") as String
+        var mapTypes = ["Standard","Satellite","Hybrid"]
+        let baseMapsIndex = UInt(find(mapTypes, baseMap)!)
+        mapView.mapType = MKMapType(rawValue: baseMapsIndex)!
         
         // TODO: Refactor this: if trackingMode == Auto then a bunch of things
-        var title = (trackingMode == "Auto") ? "Start" : "Add Point"
-        currentLabel.text = (trackingMode == "Auto") ? "Most Recent" : "Current"
-        isRunning = (trackingMode == "Auto") ? false : true
+        
+        var title = "Start"
+        if trackingMode == "Auto" {
+            currentLabel.text = "Most Recent"
+            isRunning = false
+        } else {
+            title = "Add Point"
+            currentLabel.text = "Current"
+            isRunning = true
+        }
         startButton.setTitle(title, forState: UIControlState.Normal)
         
     }
@@ -214,19 +220,23 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
             manualLats.append(LatLon.latitude)
             manualLons.append(LatLon.longitude)
             manualAlts.append(Float(userLocation.altitude))
+            manualAccuracies.append(Float(userLocation.horizontalAccuracy))
             
             currentLatLabel.textColor = boldColor
             currentLonLabel.textColor = boldColor
             currentAltLabel.textColor = boldColor
+            currentAccuracyLabel.textColor = boldColor
             
             // change "average" labels
             let avgCoords = Functions.averageCoordinates(manualLats, longitudes: manualLons)
             let latLonString = Functions.formatCoordinateString(lat: avgCoords.avgLat, lon: avgCoords.avgLon)
             let avgAlt = Functions.averageOf(manualAlts)
+            let avgAccuracies = Functions.averageOf(manualAccuracies)
             
             avgLatLabel.text = latLonString.latString
             avgLonLabel.text = latLonString.lonString
-            avgAltLabel.text = "\(avgAlt)"
+            avgAltLabel.text = "\(avgAlt) m"
+            avgAccuracyLabel.text = "\(avgAccuracies) m"
             avgPointsLabel.text = "\(manualLats.count)"
             
             // map points
@@ -259,6 +269,7 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         
         var avgCoords: (avgLat: Double, avgLon: Double)!
         var avgAlt:Float = 0.0
+        var avgAccuracy:Float = 0.0
         var points:Int = 0
         
         if trackingMode == "Auto" {
@@ -269,12 +280,14 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
             
             // average the altitudes
             avgAlt = Functions.averageOf(altitudes)
+            avgAccuracy = Functions.averageOf(accuracies)
             points = latitudes.count
             
         } else {
             
             avgCoords = Functions.averageCoordinates(manualLats, longitudes: manualLons)
             avgAlt = Functions.averageOf(manualAlts)
+            avgAccuracy = Functions.averageOf(manualAccuracies)
             points = manualLats.count
             
         }
@@ -286,8 +299,9 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
                 "Latitude" : "\(avgCoords.avgLat)",
                 "Longitude" : "\(avgCoords.avgLon)",
                 "Altitude": "\(avgAlt) m",
+                "Accuracy": "\(avgAccuracy) m",
                 "Points" : "\(points)",
-                "All Points": [latitudes, longitudes, altitudes],
+                "All Points": [latitudes, longitudes, altitudes, accuracies],
                 "Comment": commentTextField.text,
                 "Date" : "\(formattedDate)"
                 ], atIndex: 0)
@@ -298,6 +312,9 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         // reset
         resetPoints()
         avgPointsLabel.text = ""
+        
+        finishButton.layer.borderColor = UIColor.grayColor().CGColor
+        finishButton.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
         
     }
     
@@ -333,9 +350,11 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
             currentLatLabel.textColor = regularColor
             currentLonLabel.textColor = regularColor
             currentAltLabel.textColor = regularColor
+            currentAccuracyLabel.textColor = regularColor
             currentLatLabel.text = LatLon.latString
             currentLonLabel.text = LatLon.lonString
             currentAltLabel.text = "\(userLocation.altitude) m"
+            currentAccuracyLabel.text = "\(userLocation.horizontalAccuracy) m"
             
             // MARK: Change labels and map points for Auto mode
             if trackingMode == "Auto" {
@@ -344,15 +363,18 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
                 latitudes.append(LatLon.latitude)
                 longitudes.append(LatLon.longitude)
                 altitudes.append(Float(userLocation.altitude))
+                accuracies.append(Float(userLocation.horizontalAccuracy))
                 
                 // change "average" labels
                 let avgCoords = Functions.averageCoordinates(latitudes, longitudes: longitudes)
                 let latLonString = Functions.formatCoordinateString(lat: avgCoords.avgLat, lon: avgCoords.avgLon)
                 let avgAlt = Functions.averageOf(altitudes)
+                let avgAccuracy = Functions.averageOf(accuracies)
                 
                 avgLatLabel.text = latLonString.latString
                 avgLonLabel.text = latLonString.lonString
-                avgAltLabel.text = "\(avgAlt)"
+                avgAltLabel.text = "\(avgAlt) m"
+                avgAccuracyLabel.text = "\(avgAccuracy) m"
                 avgPointsLabel.text = "\(latitudes.count)"
                 
                 // map points
@@ -377,9 +399,11 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         currentLatLabel.text = ""
         currentLonLabel.text = ""
         currentAltLabel.text = ""
+        currentAccuracyLabel.text = ""
         avgLatLabel.text = ""
         avgLonLabel.text = ""
         avgAltLabel.text = ""
+        avgAccuracyLabel.text = ""
         avgPointsLabel.text = ""
         commentTextField.text = ""
         // FIXME: maybe this shouldn't always be start?
@@ -392,9 +416,11 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         latitudes = []
         longitudes = []
         altitudes = []
+        accuracies = []
         manualLats = []
         manualLons = []
         manualAlts = []
+        manualAccuracies = []
         mapView.removeAnnotations(mapView.annotations)
         isRunning = false
         
@@ -404,8 +430,20 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         
         if latitudes.count != 0 || manualLats.count != 0 {
             
+            var i = 0
+            
             isRunning = false
-            displayAlert("") // can the alert return us to this function to return true if they hit "No"
+            
+            // TODO: refactor
+            // find the index of the tab tapped on and pass that along to the displayAlert
+            for vC in tabBarController.viewControllers as [UIViewController] {
+                
+                if vC == viewController { break }
+                
+                i++
+            }
+            
+            displayAlert(i)
             return false
             
         } else {
@@ -415,8 +453,7 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         
     }
     
-    // TODO: remove navigatingTo?
-    func displayAlert(navigatingTo: String) {
+    func displayAlert(navigatingTo: Int) {
         //    func displayAlert() {
         
         let alertController = UIAlertController(title: "Your Points Have Not Been Saved", message: "Would you like to save them now?", preferredStyle: .Alert)
@@ -426,12 +463,8 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
             self.resetPoints()
             self.resetLabels()
             
-            //            // segue to whatever was tapped on:
-            //            if navigatingTo == "changeMode" {
-            //                self.changeMode(self.autoOrManual)
-            //            } else if navigatingTo == "savedCoords" {
-            //                self.performSegueWithIdentifier("savedCoordsSegue", sender: self)
-            //            }
+            // segue to whatever was tapped on:
+            self.tabBarController?.selectedIndex = navigatingTo
             
         }
         
@@ -448,11 +481,13 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         
         self.presentViewController(alertController, animated: true, completion: nil)
         
+        self.finishButton.layer.borderColor = UIColor.grayColor().CGColor
+        self.finishButton.setTitleColor(UIColor.grayColor(), forState: UIControlState.Normal)
+        
     }
     
     func displayFinishAlert() {
         
-        // FIXME: What does "continue" mean?
         let alertController = UIAlertController(title: "No points have been collected.", message: nil, preferredStyle: .Alert)
         let OKAction = UIAlertAction(title: "OK", style: .Default, handler: nil)
         alertController.addAction(OKAction)

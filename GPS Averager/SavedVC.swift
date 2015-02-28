@@ -16,7 +16,8 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
     
     let defaults = NSUserDefaults.standardUserDefaults()
     
-    var sendCoords = [String : AnyObject]()
+    var sendCoords: [String:AnyObject] = [:]
+    var sendCoordsIndex = 0
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
@@ -26,6 +27,16 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
         } else {
             coordFormat = "Decimal degrees"
         }
+        if defaults.objectForKey("baseMap") != nil {
+            baseMap = defaults.objectForKey("baseMap") as String
+        } else {
+            defaults.setValue("Standard", forKey: "baseMap")
+            baseMap = "Standard"
+        }
+        
+        let mapTypes = ["Standard","Satellite","Hybrid"]
+        let baseMapsIndex = UInt(find(mapTypes, baseMap)!)
+        mapView.mapType = MKMapType(rawValue: baseMapsIndex)!
         
         tableView.reloadData()
         
@@ -155,6 +166,7 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
             if average["Date"] as? String == view.annotation.subtitle {
                 
                 sendCoords = savedAverages[i]
+                sendCoordsIndex = i
                 performSegueWithIdentifier("showSaved", sender: self)
                 return
                 
@@ -183,6 +195,7 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
         
         // this needs to be in willSelect so it will run before prepareForSegue runs
         sendCoords = savedAverages[indexPath.row]
+        sendCoordsIndex = indexPath.row
         
         return indexPath
         
@@ -195,6 +208,7 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
             
             let newVC = segue.destinationViewController as AveragedVC
             newVC.coordsToDisplay = sendCoords
+            newVC.coordsToDisplayIndex = sendCoordsIndex
             
         }
         

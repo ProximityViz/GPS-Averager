@@ -18,14 +18,17 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
     @IBOutlet weak var avgLatLabel: UILabel!
     @IBOutlet weak var avgLonLabel: UILabel!
     @IBOutlet weak var avgAltLabel: UILabel!
+    @IBOutlet weak var avgAccuracyLabel: UILabel!
     @IBOutlet weak var avgPointsLabel: UILabel!
     @IBOutlet weak var commentTextField: UITextField!
+    @IBOutlet weak var commentConstraint: NSLayoutConstraint!
     @IBOutlet weak var saveButton: UIButton!
     
     var lat:String!
     var lon:String!
     
-    var coordsToDisplay = [String : AnyObject]()
+    var coordsToDisplay: [String:AnyObject] = [:]
+    var coordsToDisplayIndex = 0
     
     var originalCenter:CGPoint!
     
@@ -34,6 +37,10 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
         
         // aesthetics
         shareButton.setTitleTextAttributes([NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 15.0)!], forState: UIControlState.Normal)
+        
+        saveButton.layer.cornerRadius = 4
+        saveButton.layer.borderWidth = 1
+        saveButton.layer.borderColor = (UIColor (red:1.00, green:0.23, blue:0.19, alpha:1)).CGColor
         
     }
     
@@ -47,6 +54,16 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
         if (defaults.objectForKey("coordFormat") != nil) {
             coordFormat = defaults.objectForKey("coordFormat") as String
         }
+        if defaults.objectForKey("baseMap") != nil {
+            baseMap = defaults.objectForKey("baseMap") as String
+        } else {
+            defaults.setValue("Standard", forKey: "baseMap")
+            baseMap = "Standard"
+        }
+        
+        var mapTypes = ["Standard","Satellite","Hybrid"]
+        let baseMapsIndex = UInt(find(mapTypes, baseMap)!)
+        mapView.mapType = MKMapType(rawValue: baseMapsIndex)!
         
         let latToDisplay = coordsToDisplay["Latitude"] as String
         let lonToDisplay = coordsToDisplay["Longitude"] as String
@@ -90,6 +107,7 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
             }
         }
         
+        commentConstraint.constant = 8
         saveButton.hidden = false
         
     }
@@ -122,33 +140,33 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
         avgLatLabel.text = lat
         avgLonLabel.text = lon
         avgAltLabel.text = coordsToDisplay["Altitude"] as? String
+        avgAccuracyLabel.text = coordsToDisplay["Accuracy"] as? String
         avgPointsLabel.text = coordsToDisplay["Points"] as? String
         if let comment = coordsToDisplay["Comment"] as? String {
             commentTextField.text = coordsToDisplay["Comment"] as? String
         }
         
     }
-    
-    // MARK: - Navigation
-    
-//    @IBAction func unwindSegue(segue: UIStoryboardSegue) {
-//        
-//        let latToDisplay = coordsToDisplay["Latitude"]!
-//        let lonToDisplay = coordsToDisplay["Longitude"]!
-//        
-//        displayCoords(latToDisplay: latToDisplay, lonToDisplay: lonToDisplay)
-//        
-//    }
 
     
     @IBAction func saveComment(sender: AnyObject) {
         
         if commentTextField.text != "" {
             // save comment
-            println(coordsToDisplay)
+            if defaults.objectForKey("savedAverages") != nil {
+                savedAverages = defaults.objectForKey("savedAverages") as Array
+                savedAverages[coordsToDisplayIndex]["Comment"] = commentTextField.text
+                defaults.setValue(savedAverages, forKey: "savedAverages")
+            }
         }
         
-        // animate button and dismiss keyboard (if these aren't automatic)
+        // hide keyboard
+        view.endEditing(true)
+        
+        // change button
+        saveButton.hidden = true
+        
+        commentConstraint.constant = -100
         
     }
     
