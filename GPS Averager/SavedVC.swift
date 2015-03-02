@@ -199,7 +199,6 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
         
     }
     
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if (segue.identifier == "showSaved") {

@@ -96,6 +96,7 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
         
     }
     
+    // go back to main view when another tab button is pressed
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(true)
         
@@ -179,19 +180,5 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
         commentConstraint.constant = -100
         
     }
-    
-    @IBAction func goBack(sender: AnyObject) {
-
-        navigationController?.popViewControllerAnimated(true)
-        
-    }
-    
-//    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
-//        
-//        if let navC = tabBarController.selectedViewController as? UINavigationController {
-//            navC.popToRootViewControllerAnimated(false)
-//        }
-//        
-//    }
 
 }

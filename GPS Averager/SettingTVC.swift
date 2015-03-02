@@ -33,12 +33,6 @@ class SettingTVC: UITableViewController {
             currentSetting = [:]
             
         }
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
         tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
         tableView.separatorInset = UIEdgeInsetsZero
@@ -51,10 +45,13 @@ class SettingTVC: UITableViewController {
         tableView.reloadData()
         
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    // go back to main view when another tab button is pressed
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        navigationController?.popToRootViewControllerAnimated(false)
+        
     }
     
     // MARK: Cell separators
@@ -71,14 +68,10 @@ class SettingTVC: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
         return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete method implementation.
-        // Return the number of rows in the section.
         return currentOptions.count
     }
 
@@ -88,10 +81,8 @@ class SettingTVC: UITableViewController {
         cell.textLabel?.text = currentOptions[indexPath.row]
         
         if currentOptions[indexPath.row] == currentSelection {
-//            cell.accessoryType = UITableViewCellAccessoryType.Checkmark
             cell.accessoryView = UIImageView(image: UIImage(named: "Checkmark"))
         } else {
-//            cell.accessoryView = UIImageView(image: UIImage(named: "Checkmark"))
             cell.accessoryView = nil
         }
         
@@ -118,50 +109,5 @@ class SettingTVC: UITableViewController {
         tableView.reloadData()
         
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using [segue destinationViewController].
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

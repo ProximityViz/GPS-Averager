@@ -317,7 +317,6 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         userLocation = locations[0] as CLLocation
         
         // MARK: Center and zoom
-        // TODO: maybe remove == 0 part, once userlocation updates less frequently
         if isRunning == true || (latitudes.count == 0 && manualLats.count == 0) {
             
             // zoom and center map to userLocation
@@ -439,7 +438,6 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
     }
     
     func displayAlert(navigatingTo: Int) {
-        //    func displayAlert() {
         
         let alertController = UIAlertController(title: "Your Points Have Not Been Saved", message: "Would you like to save them now?", preferredStyle: .Alert)
         

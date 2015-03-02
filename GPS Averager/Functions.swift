@@ -10,7 +10,6 @@ import UIKit
 
 class Functions: NSObject {
     
-//    class func formatCoordinateString(#lat: Double, lon: Double, withFormat: String = "Decimal degrees") -> (latitude: Double, longitude: Double, latString: String, lonString: String) {
     class func formatCoordinateString(#lat: Double, lon: Double) -> (latitude: Double, longitude: Double, latString: String, lonString: String) {
         
         var decimalPlaces = 1000000.0

@@ -382,7 +382,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="06r-rR-ti7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3391" y="230"/>
+            <point key="canvasLocation" x="2419" y="246"/>
         </scene>
         <!--Setting-->
         <scene sceneID="7Rb-yW-VcQ">
@@ -423,7 +423,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gvR-7f-Fjh" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1672" y="1318"/>
+            <point key="canvasLocation" x="1701" y="1318"/>
         </scene>
         <!--NewVC-->
         <scene sceneID="iCG-5u-uJv">
@@ -879,7 +879,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7WT-fT-lqD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1809" y="-122"/>
+            <point key="canvasLocation" x="1701" y="-122"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="zcW-bZ-oJ1">
@@ -899,7 +899,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4QS-Ke-Edr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="322" y="598"/>
+            <point key="canvasLocation" x="278" y="598"/>
         </scene>
         <!--SavedVC-->
         <scene sceneID="D9H-rJ-r8H">
@@ -973,7 +973,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="O4A-qX-5gX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1809" y="598"/>
+            <point key="canvasLocation" x="1701" y="598"/>
         </scene>
         <!--Settings-->
         <scene sceneID="P6e-j6-b6v">
@@ -1037,12 +1037,11 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TDV-Fq-iNT" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="322" y="1318"/>
+            <point key="canvasLocation" x="278" y="1318"/>
         </scene>
         <!--Saved-->
         <scene sceneID="BrG-Vx-acS">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="OI2-Tf-60u" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="YRa-5F-RoE" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Saved" image="Saved" id="Jjh-vk-hCd"/>
                     <toolbarItems/>
@@ -1055,13 +1054,13 @@
                         <segue destination="LVl-na-RQn" kind="relationship" relationship="rootViewController" id="YaJ-td-jIP"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OI2-Tf-60u" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="997" y="598"/>
         </scene>
         <!--New-->
         <scene sceneID="5y9-wg-LSa">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Exl-3l-Q1U" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="Szn-F6-zfM" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="New" image="New" id="Uw8-pX-Cxk"/>
                     <toolbarItems/>
@@ -1074,6 +1073,7 @@
                         <segue destination="Pl1-ZC-Eca" kind="relationship" relationship="rootViewController" id="LQD-Zm-x0z"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Exl-3l-Q1U" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="997" y="-122"/>
         </scene>

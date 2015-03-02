@@ -15,22 +15,12 @@ let settings = [
     ["setting": "Coordinate Format", "settingName": "coordFormat", "options": ["Decimal degrees", "Decimal minutes", "Degrees, minutes, seconds"], "examples": ["Example: 33.7518732°, -84.3914068°", "Example: 33°45.11239', -84°23.48441'", "Example: 33°45'06.74\", -84°23'29.06\""]]
 ]
 
-//        [["Name" : "Decimal degrees", "Example" : "Example: 33.7518732°, -84.3914068°"],
-//            ["Name" : "Decimal minutes", "Example" : "Example: 33°45.11239', -84°23.48441'"],
-//            ["Name" : "Degrees, minutes, seconds", "Example" : "Example: 33°45'06.7435\", -84°23'29.0645\""]
-
 class SettingsTVC: UITableViewController {
     
     var currentSetting: [String:AnyObject] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
         tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
         tableView.separatorInset = UIEdgeInsetsZero
@@ -42,11 +32,6 @@ class SettingsTVC: UITableViewController {
         
         tableView.reloadData()
         
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     // MARK: Cell separators
@@ -63,13 +48,10 @@ class SettingsTVC: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Potentially incomplete method implementation.
-        // Return the number of sections.
         return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // Return the number of rows in the section.
         return settings.count
     }
 
@@ -95,41 +77,6 @@ class SettingsTVC: UITableViewController {
 
         return cell
     }
-
-    /*
-    // Override to support conditional editing of the table view.
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the specified item to be editable.
-        return true
-    }
-    */
-
-    /*
-    // Override to support editing the table view.
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-            // Delete the row from the data source
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-        }    
-    }
-    */
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(tableView: UITableView, moveRowAtIndexPath fromIndexPath: NSIndexPath, toIndexPath: NSIndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        // Return NO if you do not want the item to be re-orderable.
-        return true
-    }
-    */
 
     // MARK: - Navigation
 
