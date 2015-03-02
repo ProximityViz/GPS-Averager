@@ -70,7 +70,6 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         resetLabels()
         
         // MARK: NSUserDefaults
-        // TODO: Refactor this
         if defaults.objectForKey("savedAverages") != nil {
             savedAverages = defaults.objectForKey("savedAverages") as Array
         }
@@ -104,8 +103,6 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         let baseMapsIndex = UInt(find(mapTypes, baseMap)!)
         mapView.mapType = MKMapType(rawValue: baseMapsIndex)!
         
-        // TODO: Refactor this: if trackingMode == Auto then a bunch of things
-        
         var title = "Start"
         if trackingMode == "Auto" {
             currentLabel.text = "Most Recent"
@@ -121,10 +118,6 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // TODO: These defaults will change once the user has the option of defaulting to manual mode
-        isRunning = false
-        startButton.setTitle("Start", forState: UIControlState.Normal)
         
         // MARK: Geolocation
         manager = CLLocationManager()
@@ -145,7 +138,7 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         
         startButton.layer.cornerRadius = 4
         startButton.layer.borderWidth = 1
-        startButton.layer.borderColor = (UIColor (red:1.00, green:0.23, blue:0.19, alpha:1)).CGColor
+        startButton.layer.borderColor = (UIColor(red:0.99, green:0.13, blue:0.15, alpha:1)).CGColor
         
         finishButton.layer.cornerRadius = 4
         finishButton.layer.borderWidth = 1
@@ -189,10 +182,8 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
     // MARK: Buttons
     @IBAction func startWasPressed(sender: UIButton) {
         
-        // TODO: change color of "Finish" button to red here & grey by default
-        
-        finishButton.layer.borderColor = (UIColor (red:1.00, green:0.23, blue:0.19, alpha:1)).CGColor
-        finishButton.setTitleColor(UIColor (red:1.00, green:0.23, blue:0.19, alpha:1), forState: UIControlState.Normal)
+        finishButton.layer.borderColor = (UIColor(red:0.99, green:0.13, blue:0.15, alpha:1)).CGColor
+        finishButton.setTitleColor(UIColor(red:0.99, green:0.13, blue:0.15, alpha:1), forState: UIControlState.Normal)
         
         if trackingMode == "Auto" && isRunning == false {
             
@@ -323,7 +314,8 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         userLocation = locations[0] as CLLocation
         
         // MARK: Center and zoom
-        if latitudes.count == 0 && manualLats.count == 0 {
+        // TODO: maybe remove == 0 part, once userlocation updates less frequently
+        if isRunning == true || (latitudes.count == 0 && manualLats.count == 0) {
             
             // zoom and center map to userLocation
             let mapLat:CLLocationDegrees = userLocation.coordinate.latitude
@@ -333,11 +325,6 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
             let region:MKCoordinateRegion = MKCoordinateRegionMake(location, span)
             
             mapView.setRegion(region, animated: true)
-            
-        } else {
-            
-            // zoom to annotations
-            mapView.showAnnotations(mapView.annotations, animated: true)
             
         }
         
@@ -353,7 +340,7 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
             currentAccuracyLabel.textColor = regularColor
             currentLatLabel.text = LatLon.latString
             currentLonLabel.text = LatLon.lonString
-            currentAltLabel.text = "\(userLocation.altitude) m"
+            currentAltLabel.text = "\(round(userLocation.altitude * 1000) / 1000) m"
             currentAccuracyLabel.text = "\(userLocation.horizontalAccuracy) m"
             
             // MARK: Change labels and map points for Auto mode
@@ -394,8 +381,6 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
     
     func resetLabels() {
         
-        // FIXME: should this reset to "current"?
-        //        currentLabel.text = ""
         currentLatLabel.text = ""
         currentLonLabel.text = ""
         currentAltLabel.text = ""
@@ -406,8 +391,6 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         avgAccuracyLabel.text = ""
         avgPointsLabel.text = ""
         commentTextField.text = ""
-        // FIXME: maybe this shouldn't always be start?
-        startButton.setTitle("Start", forState: UIControlState.Normal)
         
     }
     
@@ -434,7 +417,6 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
             
             isRunning = false
             
-            // TODO: refactor
             // find the index of the tab tapped on and pass that along to the displayAlert
             for vC in tabBarController.viewControllers as [UIViewController] {
                 

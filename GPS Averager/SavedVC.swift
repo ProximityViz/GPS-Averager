@@ -34,35 +34,11 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
             baseMap = "Standard"
         }
         
-        let mapTypes = ["Standard","Satellite","Hybrid"]
-        let baseMapsIndex = UInt(find(mapTypes, baseMap)!)
-        mapView.mapType = MKMapType(rawValue: baseMapsIndex)!
-        
-        tableView.reloadData()
-        
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        tableView.delegate = self
-        
-        if (defaults.objectForKey("coordFormat") != nil) {
-            coordFormat = defaults.objectForKey("coordFormat") as String
-        } else {
-            coordFormat = "Decimal degrees"
-        }
-        
         if (defaults.objectForKey("savedAverages") != nil) {
             savedAverages = defaults.objectForKey("savedAverages") as Array
         } else {
             savedAverages = []
         }
-        
-        // MARK: Mapping
-        mapView.frame.size.width = self.view.frame.width
-        
-        mapView.delegate = self
         
         for average in savedAverages {
             
@@ -78,7 +54,11 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
             
             let annLatLon = Functions.formatCoordinateString(lat: mapLat, lon: mapLon)
             annotation.title = "\(annLatLon.latString), \(annLatLon.lonString)"
-            annotation.subtitle = average["Date"] as String
+            if average["Comment"] as? String == "" {
+                annotation.subtitle = average["Date"] as? String
+            } else {
+                annotation.subtitle = average["Comment"] as? String
+            }
             
             mapView.addAnnotation(annotation)
             
@@ -86,19 +66,31 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
         
         mapView.showAnnotations(mapView.annotations, animated: true)
         
+        tableView.reloadData()
+        
+        let mapTypes = ["Standard","Satellite","Hybrid"]
+        let baseMapsIndex = UInt(find(mapTypes, baseMap)!)
+        mapView.mapType = MKMapType(rawValue: baseMapsIndex)!
+        
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        tableView.delegate = self
+        mapView.delegate = self
+        
         tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
         tableView.separatorInset = UIEdgeInsetsZero
         
         UIToolbar.appearance().barTintColor = UIColor.whiteColor()
-        
-        tableView.reloadData()
         
     }
     
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
         
         var rightArrowButton = ArrowButton(frame: CGRectMake(0, 0, 22, 22))
-        rightArrowButton.strokeColor = (UIColor (red:1.00, green:0.23, blue:0.19, alpha:1))
+        rightArrowButton.strokeColor = UIColor(red:0.99, green:0.13, blue:0.15, alpha:1)
         rightArrowButton.strokeSize = 1.2
         
         var pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "pin")
@@ -117,7 +109,6 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // TODO: Make sections by month or day
         return 1
     }
     
@@ -152,7 +143,13 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
         
         
         cell.textLabel?.text = "\(LatLon.latString), \(LatLon.lonString)"
-        cell.detailTextLabel?.text = coordsForCell["Date"] as? String
+        if let comment = coordsForCell["Comment"] as? String {
+            if comment == "" {
+                cell.detailTextLabel?.text = coordsForCell["Date"] as? String
+            } else {
+                cell.detailTextLabel?.text = coordsForCell["Comment"] as? String
+            }
+        }
         
         return cell
     }
@@ -183,9 +180,8 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
         if editingStyle == .Delete {
             savedAverages.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
+            mapView.removeAnnotation(mapView.annotations[indexPath.row] as MKPointAnnotation)
             defaults.setValue(savedAverages, forKey: "savedAverages")
-        } else if editingStyle == .Insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }
     }
     
@@ -211,18 +207,6 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
             newVC.coordsToDisplayIndex = sendCoordsIndex
             
         }
-        
-    }
-    
-    @IBAction func unwindSegue(segue: UIStoryboardSegue) {
-        
-        tableView.reloadData()
-        
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        
-        navigationController?.setToolbarHidden(true, animated: true)
         
     }
     

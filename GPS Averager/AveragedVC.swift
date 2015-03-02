@@ -15,6 +15,7 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     
+    @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var avgLatLabel: UILabel!
     @IBOutlet weak var avgLonLabel: UILabel!
     @IBOutlet weak var avgAltLabel: UILabel!
@@ -40,7 +41,7 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
         
         saveButton.layer.cornerRadius = 4
         saveButton.layer.borderWidth = 1
-        saveButton.layer.borderColor = (UIColor (red:1.00, green:0.23, blue:0.19, alpha:1)).CGColor
+        saveButton.layer.borderColor = (UIColor(red:0.99, green:0.13, blue:0.15, alpha:1)).CGColor
         
     }
     
@@ -124,7 +125,8 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
     
     @IBAction func shareWasPressed(sender: UIBarButtonItem) {
         
-        let shareText = "Averaged coordinates: Latitude: \(lat), Longitude: \(lon)"
+        let altitude = coordsToDisplay["Altitude"] as? String
+        let shareText = "Coordinates from GPS Averager: Latitude: \(lat), Longitude: \(lon), Altitude: \(altitude)"
         let activityViewController : UIActivityViewController = UIActivityViewController(activityItems: [shareText], applicationActivities: nil)
         presentViewController(activityViewController, animated: true, completion: nil)
         
@@ -137,6 +139,7 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
         lat = LatLon.latString
         lon = LatLon.lonString
         
+        dateLabel.text = coordsToDisplay["Date"] as? String
         avgLatLabel.text = lat
         avgLonLabel.text = lon
         avgAltLabel.text = coordsToDisplay["Altitude"] as? String
