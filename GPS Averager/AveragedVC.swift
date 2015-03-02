@@ -11,8 +11,6 @@ import MapKit
 
 class AveragedVC: UIViewController, MKMapViewDelegate {
     
-    @IBOutlet weak var shareButton: UIBarButtonItem!
-    
     @IBOutlet weak var mapView: MKMapView!
     
     @IBOutlet weak var dateLabel: UILabel!
@@ -37,7 +35,7 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
         super.viewDidLoad()
         
         // aesthetics
-        shareButton.setTitleTextAttributes([NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 15.0)!], forState: UIControlState.Normal)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "shareWasPressed:")
         
         saveButton.layer.cornerRadius = 4
         saveButton.layer.borderWidth = 1
@@ -47,6 +45,8 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
+        
+        navigationController?.navigationBarHidden = false
         
         if coordsToDisplay.isEmpty {
             coordsToDisplay = savedAverages.first!
@@ -93,6 +93,13 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
+        
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        navigationController?.popToRootViewControllerAnimated(false)
         
     }
     
@@ -174,9 +181,17 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
     }
     
     @IBAction func goBack(sender: AnyObject) {
-        
-        dismissViewControllerAnimated(true, completion: nil)
+
+        navigationController?.popViewControllerAnimated(true)
         
     }
+    
+//    func tabBarController(tabBarController: UITabBarController, didSelectViewController viewController: UIViewController) {
+//        
+//        if let navC = tabBarController.selectedViewController as? UINavigationController {
+//            navC.popToRootViewControllerAnimated(false)
+//        }
+//        
+//    }
 
 }

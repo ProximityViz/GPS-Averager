@@ -62,6 +62,9 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
     let boldColor = UIColor(red:0.99, green:0.13, blue:0.15, alpha:1)
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        
+        navigationController?.navigationBarHidden = true
         
         // reset mapView
         mapView.removeAnnotations(mapView.annotations)

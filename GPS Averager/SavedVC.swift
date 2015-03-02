@@ -22,6 +22,8 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         
+        navigationController?.navigationBarHidden = true
+        
         if (defaults.objectForKey("coordFormat") != nil) {
             coordFormat = defaults.objectForKey("coordFormat") as String
         } else {
@@ -54,10 +56,11 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
             
             let annLatLon = Functions.formatCoordinateString(lat: mapLat, lon: mapLon)
             annotation.title = "\(annLatLon.latString), \(annLatLon.lonString)"
-            if average["Comment"] as? String == "" {
-                annotation.subtitle = average["Date"] as? String
-            } else {
-                annotation.subtitle = average["Comment"] as? String
+            annotation.subtitle = average["Date"] as? String
+            if let comment = average["Comment"] as? String {
+                if comment != "" {
+                    annotation.subtitle = average["Comment"] as? String
+                }
             }
             
             mapView.addAnnotation(annotation)
@@ -143,10 +146,9 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
         
         
         cell.textLabel?.text = "\(LatLon.latString), \(LatLon.lonString)"
+        cell.detailTextLabel?.text = coordsForCell["Date"] as? String
         if let comment = coordsForCell["Comment"] as? String {
-            if comment == "" {
-                cell.detailTextLabel?.text = coordsForCell["Date"] as? String
-            } else {
+            if comment != "" {
                 cell.detailTextLabel?.text = coordsForCell["Comment"] as? String
             }
         }
