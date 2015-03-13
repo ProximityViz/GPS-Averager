@@ -10,19 +10,6 @@ import UIKit
 import MapKit
 import CoreLocation
 
-var savedAverages: [[String:AnyObject]] = [[:]]
-
-var coordFormat:String!
-var trackingMode:String!
-var baseMap:String!
-
-// NSUserDefaults:
-
-// "savedAverages": [String:String]
-// "coordFormat": String
-// "trackingMode": String
-let defaults = NSUserDefaults.standardUserDefaults()
-
 class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UITabBarControllerDelegate {
     
     @IBOutlet weak var currentLabel: UILabel!
@@ -73,35 +60,14 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         resetLabels()
         
         // MARK: NSUserDefaults
-        if defaults.objectForKey("savedAverages") != nil {
-            savedAverages = defaults.objectForKey("savedAverages") as Array
-        }
-        if defaults.objectForKey("baseMap") != nil {
-            baseMap = defaults.objectForKey("baseMap") as String
-        } else {
-            defaults.setValue("Standard", forKey: "baseMap")
-            baseMap = "Standard"
-        }
-        if defaults.objectForKey("trackingMode") != nil {
-            trackingMode = defaults.objectForKey("trackingMode") as String
-        } else {
-            defaults.setValue("Auto", forKey: "trackingMode")
-            trackingMode = "Auto"
-        }
-        if defaults.objectForKey("coordFormat") != nil {
-            coordFormat = defaults.objectForKey("coordFormat") as String
-        } else {
-            defaults.setValue("Decimal degrees", forKey: "coordFormat")
-            coordFormat = "Decimal degrees"
-        }
-        if defaults.objectForKey("baseMap") != nil {
-            baseMap = defaults.objectForKey("baseMap") as String
-        } else {
-            defaults.setValue("Standard", forKey: "baseMap")
-            baseMap = "Standard"
-        }
         
+        if defaults.objectForKey("savedAverages") != nil {
+            savedAverages = defaults.objectForKey("savedAverages") as [[String:AnyObject]]
+        }
         baseMap = defaults.objectForKey("baseMap") as String
+        trackingMode = defaults.objectForKey("trackingMode") as String
+        coordFormat = defaults.objectForKey("coordFormat") as String
+        
         var mapTypes = ["Standard","Satellite","Hybrid"]
         let baseMapsIndex = UInt(find(mapTypes, baseMap)!)
         mapView.mapType = MKMapType(rawValue: baseMapsIndex)!
@@ -135,6 +101,8 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         mapView.removeAnnotations(mapView.annotations)
         
         // MARK: Aesthetics
+        commentTextField.autocapitalizationType = UITextAutocapitalizationType.Sentences
+        
         commentTextField.layer.cornerRadius = 4
         commentTextField.layer.borderWidth = 1
         commentTextField.layer.borderColor = UIColor.grayColor().CGColor
@@ -156,6 +124,14 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillShow:"), name: UIKeyboardWillShowNotification, object: nil)
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("keyboardWillHide:"), name: UIKeyboardWillHideNotification, object: nil)
+        
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(true)
+        
+        // hide keyboard
+        commentTextField.resignFirstResponder()
         
     }
     

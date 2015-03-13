@@ -162,7 +162,12 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
         
         for average in savedAverages {
             
-            if average["Date"] as? String == view.annotation.subtitle {
+            let avgLat = average["Latitude"] as String!
+            let avgLon = average["Longitude"] as String!
+            let viewLat:String = "\(view.annotation.coordinate.latitude)"
+            let viewLon:String = "\(view.annotation.coordinate.longitude)"
+            
+            if avgLat == viewLat && avgLon == viewLon {
                 
                 sendCoords = savedAverages[i]
                 sendCoordsIndex = i

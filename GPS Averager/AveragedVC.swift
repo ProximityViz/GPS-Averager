@@ -37,6 +37,8 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
         // aesthetics
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Action, target: self, action: "shareWasPressed:")
         
+        commentTextField.autocapitalizationType = UITextAutocapitalizationType.Sentences
+        
         saveButton.layer.cornerRadius = 4
         saveButton.layer.borderWidth = 1
         saveButton.layer.borderColor = (UIColor(red:0.99, green:0.13, blue:0.15, alpha:1)).CGColor

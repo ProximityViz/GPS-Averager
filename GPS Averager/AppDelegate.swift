@@ -9,12 +9,43 @@
 import UIKit
 import MapKit
 
+var savedAverages = [[String:AnyObject]]()
+
+var coordFormat:String!
+var trackingMode:String!
+var baseMap:String!
+
+let defaults = NSUserDefaults.standardUserDefaults()
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+        
+        // MARK: NSUserDefaults
+        if defaults.objectForKey("savedAverages") != nil {
+            savedAverages = defaults.objectForKey("savedAverages") as [[String:AnyObject]]
+        }
+        if defaults.objectForKey("baseMap") != nil {
+            baseMap = defaults.objectForKey("baseMap") as String
+        } else {
+            defaults.setValue("Standard", forKey: "baseMap")
+            baseMap = "Standard"
+        }
+        if defaults.objectForKey("trackingMode") != nil {
+            trackingMode = defaults.objectForKey("trackingMode") as String
+        } else {
+            defaults.setValue("Auto", forKey: "trackingMode")
+            trackingMode = "Auto"
+        }
+        if defaults.objectForKey("coordFormat") != nil {
+            coordFormat = defaults.objectForKey("coordFormat") as String
+        } else {
+            defaults.setValue("Decimal degrees", forKey: "coordFormat")
+            coordFormat = "Decimal degrees"
+        }
         
         // MARK: aesthetics
         UIBarButtonItem.appearance().tintColor = UIColor(red:0.99, green:0.13, blue:0.15, alpha:1)
