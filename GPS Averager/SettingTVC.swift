@@ -20,19 +20,10 @@ class SettingTVC: UITableViewController {
         title = currentSetting["setting"] as? String
         
         // NSUserDefaults
-        if let currentSettingName = currentSetting["settingName"] as? String {
-            currentSelection = defaults.objectForKey(currentSettingName) as? String
-        } else {
-            currentSelection = ""
-        }
+        let currentSettingName = currentSetting["settingName"] as String
+        currentSelection = defaults.objectForKey(currentSettingName) as String
         
         currentOptions = currentSetting["options"] as? [String]
-        
-        if currentSetting == nil {
-            
-            currentSetting = [:]
-            
-        }
         
         tableView.separatorStyle = UITableViewCellSeparatorStyle.SingleLine
         tableView.separatorInset = UIEdgeInsetsZero
@@ -55,9 +46,6 @@ class SettingTVC: UITableViewController {
     }
     
     // MARK: Cell separators
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return 60.0
-    }
     
     override func tableView(tableView: UITableView, willDisplayCell cell: UITableViewCell, forRowAtIndexPath indexPath: NSIndexPath) {
         cell.separatorInset = UIEdgeInsetsZero
@@ -66,6 +54,10 @@ class SettingTVC: UITableViewController {
     }
 
     // MARK: - Table view data source
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 60.0
+    }
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1

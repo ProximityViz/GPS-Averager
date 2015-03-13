@@ -8,7 +8,6 @@
 
 import UIKit
 
-// array of dictionaries
 let settings = [
     ["setting": "Tracking Mode", "settingName": "trackingMode", "options": ["Auto", "Manual"]],
     ["setting": "Base Map", "settingName": "baseMap", "options": ["Standard", "Hybrid", "Satellite"]],
