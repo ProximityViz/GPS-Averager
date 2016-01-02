@@ -10,11 +10,11 @@ import UIKit
 
 class Functions: NSObject {
     
-    class func formatCoordinateString(#lat: Double, lon: Double) -> (latitude: Double, longitude: Double, latString: String, lonString: String) {
+    class func formatCoordinateString(lat lat: Double, lon: Double) -> (latitude: Double, longitude: Double, latString: String, lonString: String) {
         
-        var decimalPlaces = 1000000.0
-        var latitude = round(lat * decimalPlaces) / decimalPlaces
-        var longitude = round(lon * decimalPlaces) / decimalPlaces
+        let decimalPlaces = 1000000.0
+        let latitude = round(lat * decimalPlaces) / decimalPlaces
+        let longitude = round(lon * decimalPlaces) / decimalPlaces
         
         var latString:String
         var lonString:String
@@ -39,10 +39,10 @@ class Functions: NSObject {
             } else {
                 lonDeg = Int(floor(longitude))
             }
-            var latMin = fabs(latitude % 1) * 60
-            var lonMin = fabs(longitude % 1) * 60
-            var latMinRound = round(latMin * 100000.0) / 100000.0
-            var lonMinRound = round(lonMin * 100000.0) / 100000.0
+            let latMin = fabs(latitude % 1) * 60
+            let lonMin = fabs(longitude % 1) * 60
+            let latMinRound = round(latMin * 100000.0) / 100000.0
+            let lonMinRound = round(lonMin * 100000.0) / 100000.0
             if latMinRound < 10 {latZero = "0"} else {latZero = ""}
             if lonMinRound < 10 {lonZero = "0"} else {lonZero = ""}
             
@@ -64,14 +64,14 @@ class Functions: NSObject {
             } else {
                 lonDeg = Int(floor(longitude))
             }
-            var latMin = Int(floor(fabs(latitude % 1) * 60))
-            var lonMin = Int(floor(fabs(longitude % 1) * 60))
+            let latMin = Int(floor(fabs(latitude % 1) * 60))
+            let lonMin = Int(floor(fabs(longitude % 1) * 60))
             if latMin < 10 {latZero = "0"} else {latZero = ""}
             if lonMin < 10 {lonZero = "0"} else {lonZero = ""}
-            var latSec = ((fabs(latitude % 1) * 60) % 1) * 60
-            var lonSec = ((fabs(longitude % 1) * 60) % 1) * 60
-            var latSecRound = round(latSec * 100.0) / 100.0
-            var lonSecRound = round(lonSec * 100.0) / 100.0
+            let latSec = ((fabs(latitude % 1) * 60) % 1) * 60
+            let lonSec = ((fabs(longitude % 1) * 60) % 1) * 60
+            let latSecRound = round(latSec * 100.0) / 100.0
+            let lonSecRound = round(lonSec * 100.0) / 100.0
             if latSecRound < 10 {latSecZero = "0"} else {latSecZero = ""}
             if lonSecRound < 10 {lonSecZero = "0"} else {lonSecZero = ""}
             
@@ -119,8 +119,8 @@ class Functions: NSObject {
         for (var i = 0; i < latitudes.count; i++) {
             
             // calculate cartesian coordinates
-            var radLat = latitudes[i] * π / 180
-            var radLon = longitudes[i] * π / 180
+            let radLat = latitudes[i] * π / 180
+            let radLon = longitudes[i] * π / 180
             
             // w1 & w2 = 0
             // calculate weighted average

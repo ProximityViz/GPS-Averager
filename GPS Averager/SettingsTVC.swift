@@ -81,9 +81,9 @@ class SettingsTVC: UITableViewController {
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
-        if let indexPath = tableView.indexPathForSelectedRow() {
-            currentSetting = settings[indexPath.row] as [String:AnyObject]
-            let vc: SettingTVC = segue.destinationViewController as SettingTVC
+        if let indexPath = tableView.indexPathForSelectedRow {
+            currentSetting = settings[indexPath.row] as! [String:AnyObject]
+            let vc: SettingTVC = segue.destinationViewController as! SettingTVC
             vc.currentSetting = currentSetting
         }
         

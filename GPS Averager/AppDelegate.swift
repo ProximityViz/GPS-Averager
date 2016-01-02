@@ -26,22 +26,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // MARK: NSUserDefaults
         if defaults.objectForKey("savedAverages") != nil {
-            savedAverages = defaults.objectForKey("savedAverages") as [[String:AnyObject]]
+            savedAverages = defaults.objectForKey("savedAverages") as! [[String:AnyObject]]
         }
         if defaults.objectForKey("baseMap") != nil {
-            baseMap = defaults.objectForKey("baseMap") as String
+            baseMap = defaults.objectForKey("baseMap") as! String
         } else {
             defaults.setValue("Standard", forKey: "baseMap")
             baseMap = "Standard"
         }
         if defaults.objectForKey("trackingMode") != nil {
-            trackingMode = defaults.objectForKey("trackingMode") as String
+            trackingMode = defaults.objectForKey("trackingMode") as! String
         } else {
             defaults.setValue("Auto", forKey: "trackingMode")
             trackingMode = "Auto"
         }
         if defaults.objectForKey("coordFormat") != nil {
-            coordFormat = defaults.objectForKey("coordFormat") as String
+            coordFormat = defaults.objectForKey("coordFormat") as! String
         } else {
             defaults.setValue("Decimal degrees", forKey: "coordFormat")
             coordFormat = "Decimal degrees"
@@ -50,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // MARK: aesthetics
         UIBarButtonItem.appearance().tintColor = UIColor(red:0.99, green:0.13, blue:0.15, alpha:1)
         UINavigationBar.appearance().tintColor = UIColor(red:0.99, green:0.13, blue:0.15, alpha:1)
-        UITabBar.appearance().selectedImageTintColor = UIColor(red:0.99, green:0.13, blue:0.15, alpha:1)
+        UITabBar.appearance().tintColor = UIColor(red:0.99, green:0.13, blue:0.15, alpha:1)
         UINavigationBar.appearance().backgroundColor = UIColor (red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         UINavigationBar.appearance().titleTextAttributes = [NSFontAttributeName: UIFont(name: "HelveticaNeue-Light", size: 20.0)!]
         UISegmentedControl.appearance().setTitleTextAttributes([NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 15.0)!], forState: UIControlState.Normal)

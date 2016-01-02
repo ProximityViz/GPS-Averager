@@ -55,21 +55,21 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
         }
         
         if (defaults.objectForKey("coordFormat") != nil) {
-            coordFormat = defaults.objectForKey("coordFormat") as String
+            coordFormat = defaults.objectForKey("coordFormat") as! String
         }
         if defaults.objectForKey("baseMap") != nil {
-            baseMap = defaults.objectForKey("baseMap") as String
+            baseMap = defaults.objectForKey("baseMap") as! String
         } else {
             defaults.setValue("Standard", forKey: "baseMap")
             baseMap = "Standard"
         }
         
-        var mapTypes = ["Standard","Satellite","Hybrid"]
-        let baseMapsIndex = UInt(find(mapTypes, baseMap)!)
+        let mapTypes = ["Standard","Satellite","Hybrid"]
+        let baseMapsIndex = UInt(mapTypes.indexOf(baseMap)!)
         mapView.mapType = MKMapType(rawValue: baseMapsIndex)!
         
-        let latToDisplay = coordsToDisplay["Latitude"] as String
-        let lonToDisplay = coordsToDisplay["Longitude"] as String
+        let latToDisplay = coordsToDisplay["Latitude"] as! String
+        let lonToDisplay = coordsToDisplay["Longitude"] as! String
         
         displayCoords(latToDisplay: latToDisplay, lonToDisplay: lonToDisplay)
         
@@ -129,7 +129,7 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
     }
     
     // minimize keyboard on tap outside
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         view.endEditing(true)
     }
     
@@ -142,7 +142,7 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
         
     }
     
-    func displayCoords(#latToDisplay: String, lonToDisplay: String) {
+    func displayCoords(latToDisplay latToDisplay: String, lonToDisplay: String) {
         
         let LatLon = Functions.formatCoordinateString(lat: (latToDisplay as NSString).doubleValue, lon: (lonToDisplay as NSString).doubleValue)
         
@@ -156,7 +156,7 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
         avgAccuracyLabel.text = coordsToDisplay["Accuracy"] as? String
         avgPointsLabel.text = coordsToDisplay["Points"] as? String
         if let comment = coordsToDisplay["Comment"] as? String {
-            commentTextField.text = coordsToDisplay["Comment"] as? String
+            commentTextField.text = comment
         }
         
     }
@@ -167,7 +167,7 @@ class AveragedVC: UIViewController, MKMapViewDelegate {
         if commentTextField.text != "" {
             // save comment
             if defaults.objectForKey("savedAverages") != nil {
-                savedAverages = defaults.objectForKey("savedAverages") as Array
+                savedAverages = defaults.objectForKey("savedAverages") as! Array
                 savedAverages[coordsToDisplayIndex]["Comment"] = commentTextField.text
                 defaults.setValue(savedAverages, forKey: "savedAverages")
             }

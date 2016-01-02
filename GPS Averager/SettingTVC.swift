@@ -20,8 +20,8 @@ class SettingTVC: UITableViewController {
         title = currentSetting["setting"] as? String
         
         // NSUserDefaults
-        let currentSettingName = currentSetting["settingName"] as String
-        currentSelection = defaults.objectForKey(currentSettingName) as String
+        let currentSettingName = currentSetting["settingName"] as! String
+        currentSelection = defaults.objectForKey(currentSettingName) as! String
         
         currentOptions = currentSetting["options"] as? [String]
         
@@ -78,7 +78,7 @@ class SettingTVC: UITableViewController {
             cell.accessoryView = nil
         }
         
-        if currentSetting["setting"] as String == "Coordinate Format" {
+        if currentSetting["setting"] as! String == "Coordinate Format" {
             if let examples = currentSetting["examples"] as? [String] {
                 cell.detailTextLabel?.text = examples[indexPath.row]
             }

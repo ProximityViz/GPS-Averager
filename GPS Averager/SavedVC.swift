@@ -25,29 +25,29 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
         navigationController?.navigationBarHidden = true
         
         if (defaults.objectForKey("coordFormat") != nil) {
-            coordFormat = defaults.objectForKey("coordFormat") as String
+            coordFormat = defaults.objectForKey("coordFormat") as! String
         } else {
             coordFormat = "Decimal degrees"
         }
         if defaults.objectForKey("baseMap") != nil {
-            baseMap = defaults.objectForKey("baseMap") as String
+            baseMap = defaults.objectForKey("baseMap") as! String
         } else {
             defaults.setValue("Standard", forKey: "baseMap")
             baseMap = "Standard"
         }
         
         if (defaults.objectForKey("savedAverages") != nil) {
-            savedAverages = defaults.objectForKey("savedAverages") as Array
+            savedAverages = defaults.objectForKey("savedAverages") as! Array
         } else {
             savedAverages = []
         }
         
         for average in savedAverages {
             
-            let tempLat:String = average["Latitude"] as String
+            let tempLat:String = average["Latitude"] as! String
             let mapLat = (tempLat as NSString).doubleValue
             
-            let tempLon:String = average["Longitude"] as String
+            let tempLon:String = average["Longitude"] as! String
             let mapLon = (tempLon as NSString).doubleValue
             
             let location:CLLocationCoordinate2D = CLLocationCoordinate2DMake(mapLat, mapLon)
@@ -72,7 +72,7 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
         tableView.reloadData()
         
         let mapTypes = ["Standard","Satellite","Hybrid"]
-        let baseMapsIndex = UInt(find(mapTypes, baseMap)!)
+        let baseMapsIndex = UInt(mapTypes.indexOf(baseMap)!)
         mapView.mapType = MKMapType(rawValue: baseMapsIndex)!
         
     }
@@ -90,13 +90,13 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
         
     }
     
-    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         
-        var rightArrowButton = ArrowButton(frame: CGRectMake(0, 0, 22, 22))
+        let rightArrowButton = ArrowButton(frame: CGRectMake(0, 0, 22, 22))
         rightArrowButton.strokeColor = UIColor(red:0.99, green:0.13, blue:0.15, alpha:1)
         rightArrowButton.strokeSize = 1.2
         
-        var pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "pin")
+        let pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "pin")
         
         pinView.rightCalloutAccessoryView = rightArrowButton
         pinView.canShowCallout = true
@@ -139,8 +139,8 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
         
         let coordsForCell = savedAverages[indexPath.row]
         
-        let latToDisplay = coordsForCell["Latitude"] as String
-        let lonToDisplay = coordsForCell["Longitude"] as String
+        let latToDisplay = coordsForCell["Latitude"] as! String
+        let lonToDisplay = coordsForCell["Longitude"] as! String
         
         let LatLon = Functions.formatCoordinateString(lat: (latToDisplay as NSString).doubleValue, lon: (lonToDisplay as NSString).doubleValue)
         
@@ -156,16 +156,16 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
         return cell
     }
     
-    func mapView(mapView: MKMapView!, annotationView view: MKAnnotationView!, calloutAccessoryControlTapped control: UIControl!) {
+    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         
         var i:Int = 0
         
         for average in savedAverages {
             
-            let avgLat = average["Latitude"] as String!
-            let avgLon = average["Longitude"] as String!
-            let viewLat:String = "\(view.annotation.coordinate.latitude)"
-            let viewLon:String = "\(view.annotation.coordinate.longitude)"
+            let avgLat = average["Latitude"] as! String!
+            let avgLon = average["Longitude"] as! String!
+            let viewLat:String = "\(view.annotation!.coordinate.latitude)"
+            let viewLon:String = "\(view.annotation!.coordinate.longitude)"
             
             if avgLat == viewLat && avgLon == viewLon {
                 
@@ -187,7 +187,7 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
         if editingStyle == .Delete {
             savedAverages.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            mapView.removeAnnotation(mapView.annotations[indexPath.row] as MKPointAnnotation)
+            mapView.removeAnnotation(mapView.annotations[indexPath.row] as! MKPointAnnotation)
             defaults.setValue(savedAverages, forKey: "savedAverages")
         }
     }
@@ -208,7 +208,7 @@ class SavedVC: UIViewController, MKMapViewDelegate, UITableViewDelegate, UITable
         
         if (segue.identifier == "showSaved") {
             
-            let newVC = segue.destinationViewController as AveragedVC
+            let newVC = segue.destinationViewController as! AveragedVC
             newVC.coordsToDisplay = sendCoords
             newVC.coordsToDisplayIndex = sendCoordsIndex
             

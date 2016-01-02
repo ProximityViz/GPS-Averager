@@ -62,14 +62,14 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         // MARK: NSUserDefaults
         
         if defaults.objectForKey("savedAverages") != nil {
-            savedAverages = defaults.objectForKey("savedAverages") as [[String:AnyObject]]
+            savedAverages = defaults.objectForKey("savedAverages") as! [[String:AnyObject]]
         }
-        baseMap = defaults.objectForKey("baseMap") as String
-        trackingMode = defaults.objectForKey("trackingMode") as String
-        coordFormat = defaults.objectForKey("coordFormat") as String
+        baseMap = defaults.objectForKey("baseMap") as! String
+        trackingMode = defaults.objectForKey("trackingMode") as! String
+        coordFormat = defaults.objectForKey("coordFormat") as! String
         
-        var mapTypes = ["Standard","Satellite","Hybrid"]
-        let baseMapsIndex = UInt(find(mapTypes, baseMap)!)
+        let mapTypes = ["Standard","Satellite","Hybrid"]
+        let baseMapsIndex = UInt(mapTypes.indexOf(baseMap)!)
         mapView.mapType = MKMapType(rawValue: baseMapsIndex)!
         
         var title = "Start"
@@ -154,7 +154,7 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
     }
     
     // minimize keyboard on tap outside
-    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         view.endEditing(true)
     }
     
@@ -272,7 +272,7 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
                 "Accuracy": "\(avgAccuracy) m",
                 "Points" : "\(points)",
                 "All Points": [latitudes, longitudes, altitudes, accuracies],
-                "Comment": commentTextField.text,
+                "Comment": commentTextField.text!,
                 "Date" : "\(formattedDate)"
                 ], atIndex: 0)
             defaults.setValue(savedAverages, forKey: "savedAverages")
@@ -288,7 +288,7 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
         
     }
     
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
         userLocation = locations[0] as CLLocation
         
@@ -396,7 +396,7 @@ class NewVC: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIT
             isRunning = false
             
             // find the index of the tab tapped on and pass that along to the displayAlert
-            for vC in tabBarController.viewControllers as [UIViewController] {
+            for vC in tabBarController.viewControllers! as [UIViewController] {
                 
                 if vC == viewController { break }
                 

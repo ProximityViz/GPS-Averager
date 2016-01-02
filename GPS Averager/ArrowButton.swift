@@ -23,7 +23,7 @@ import UIKit
     override func drawRect(rect: CGRect) {
         
         // 22x22
-        var context = UIGraphicsGetCurrentContext()
+        let context = UIGraphicsGetCurrentContext()
         
         strokeColor.set()
         
@@ -31,13 +31,13 @@ import UIKit
         
         if isRounded {
         
-            CGContextSetLineJoin(context, kCGLineJoinRound)
-            CGContextSetLineCap(context, kCGLineCapRound)
+            CGContextSetLineJoin(context, CGLineJoin.Round)
+            CGContextSetLineCap(context, CGLineCap.Round)
             
         } else {
             
-            CGContextSetLineJoin(context, kCGLineJoinMiter)
-            CGContextSetLineCap(context, kCGLineCapSquare)
+            CGContextSetLineJoin(context, CGLineJoin.Miter)
+            CGContextSetLineCap(context, CGLineCap.Square)
             
         }
         
